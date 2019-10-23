@@ -33,3 +33,20 @@ C:\Users\Admin\Downloads\vehinh (1)\vehinh\vehinh\obj\Debug\vehinh.csproj.CoreCo
 C:\Users\Admin\Downloads\vehinh (1)\vehinh\vehinh\obj\Debug\vehinh.csproj.CopyComplete
 C:\Users\Admin\Downloads\vehinh (1)\vehinh\vehinh\obj\Debug\vehinh.exe
 C:\Users\Admin\Downloads\vehinh (1)\vehinh\vehinh\obj\Debug\vehinh.pdb
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\vehinh.exe.config
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\vehinh.exe
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\vehinh.pdb
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\SharpGL.dll
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\SharpGL.SceneGraph.dll
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\SharpGL.WinForms.dll
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\SharpGL.xml
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\SharpGL.SceneGraph.xml
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\bin\Debug\SharpGL.WinForms.xml
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.csprojAssemblyReference.cache
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.Form1.resources
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.Properties.Resources.resources
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.csproj.GenerateResource.cache
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.csproj.CoreCompileInputs.cache
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.csproj.CopyComplete
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.exe
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Lab1_Project\1712842_891_893_873_927_BT1\vehinh\obj\Debug\vehinh.pdb

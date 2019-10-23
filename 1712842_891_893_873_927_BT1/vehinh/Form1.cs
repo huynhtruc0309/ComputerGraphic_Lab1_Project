@@ -144,12 +144,7 @@ namespace vehinh
             gl.Viewport(0, 0, gl.RenderContextProvider.Width, gl.RenderContextProvider.Height);
             gl.Ortho2D(0, gl.RenderContextProvider.Width, 0, gl.RenderContextProvider.Height);
         }
-
-        /// <summary>
-        /// Hàm vẽ đường thẳng
-        /// </summary>
-        /// <param name="pStart">Điểm bắt đầu</param>
-        /// <param name="pEnd">Điểm kết thúc</param>
+        
         private void veDuongThang(Point pStart, Point pEnd)
         {
             Stopwatch sw = new Stopwatch();
@@ -235,11 +230,6 @@ namespace vehinh
             textBox.Text = sw.Elapsed.ToString();
         }
 
-        /// <summary>
-        /// Hàm vẽ hình tròn
-        /// </summary>
-        /// <param name="pStart">Điểm bắt đầu</param>
-        /// <param name="pEnd">Điểm kết thúc</param>
         private void veHinhTron(Point pStart,Point pEnd)
         {
             //Ham do thoi gian ve
@@ -295,66 +285,6 @@ namespace vehinh
             sw.Stop();
             textBox.Text = sw.Elapsed.ToString();
         }
-        //{ //nen ve bang mid point
-        //    Stopwatch sw = new Stopwatch();
-        //    sw.Start();
-        //    // double radius = Math.Sqrt((pStart.X - pEnd.X) * (pStart.X - pEnd.X) + (pStart.Y - pEnd.Y) * (pStart.Y - pEnd.Y));
-        //    // double k = 1 / radius;
-        //    //double alpha = 0;
-        //    //OpenGL gl = openGLControl.OpenGL;
-        //    //gl.Begin(OpenGL.GL_POINTS);
-        //    //while (alpha < Math.PI * 2)
-        //    //{
-        //    //    gl.Vertex(pStart.X + Math.Round(radius*Math.Cos(alpha)), gl.RenderContextProvider.Height - pStart.Y + Math.Round(radius * Math.Sin(alpha)));
-        //    //    alpha += k;
-        //    //}
-        //    //gl.End();
-        //    //gl.Flush();
-        //    double radius = Math.Sqrt((pStart.X - pEnd.X) * (pStart.X - pEnd.X) + (pStart.Y - pEnd.Y) * (pStart.Y - pEnd.Y));
-        //    OpenGL gl = openGLControl.OpenGL;
-        //    gl.Begin(OpenGL.GL_POINTS);
-        //    gl.Vertex(pStart.X, gl.RenderContextProvider.Height - Math.Round(pStart.Y + radius));
-        //    gl.Vertex(pStart.X, gl.RenderContextProvider.Height - Math.Round(pStart.Y - radius));
-        //    gl.Vertex(pStart.X + Math.Round(radius), gl.RenderContextProvider.Height - pStart.Y);
-        //    gl.Vertex(pStart.X - Math.Round(radius), gl.RenderContextProvider.Height - pStart.Y);
-        //    //ve tu tam roi tinh tien do do phuong trinh se la x^2 + y^2 = r
-        //    int x0 = 0;
-        //    int y0 = (int)Math.Round(radius);
-        //    double po = 5 / 4.0 - radius;
-        //    //int k = 0;
-        //    while (x0 < y0)
-        //    {
-        //        if (po < 0)
-        //        {
-        //            x0 = x0 + 1;
-        //            po = po + 2 * x0 + 1;
-        //        }
-        //        else
-        //        {
-        //            x0 = x0 + 1;
-        //            y0 = y0 - 1;
-        //            po = po + 2 * x0 - 2 * y0 + 1;
-        //        }
-        //        gl.Vertex(pStart.X + x0, gl.RenderContextProvider.Height - (pStart.Y + y0));
-        //        gl.Vertex(pStart.X + y0, gl.RenderContextProvider.Height - (pStart.Y + x0));
-        //        gl.Vertex(pStart.X + x0, gl.RenderContextProvider.Height - (pStart.Y - y0));
-        //        gl.Vertex(pStart.X + y0, gl.RenderContextProvider.Height - (pStart.Y - x0));
-
-        //        gl.Vertex(pStart.X - x0, gl.RenderContextProvider.Height - (pStart.Y + y0));
-        //        gl.Vertex(pStart.X - y0, gl.RenderContextProvider.Height - (pStart.Y + x0));
-        //        gl.Vertex(pStart.X - x0, gl.RenderContextProvider.Height - (pStart.Y - y0));
-        //        gl.Vertex(pStart.X - y0, gl.RenderContextProvider.Height - (pStart.Y - x0));
-        //       // k = k + 1;
-
-        //    }
-
-        //    gl.End();
-        //    gl.Flush();
-
-        //    sw.Stop();
-        //    textBox.Text = sw.Elapsed.ToString();
-
-        //}
 
         private void veHinhEllipse(Point pStart, Point pEnd)
         {
@@ -554,81 +484,81 @@ namespace vehinh
 
         private void to_mau_fill(Point Start, Color color)
         {
-            //    Stopwatch sw = new Stopwatch();
-            //    sw.Start();
-            //    filled_area area;
-            //    area.color = color;
-            //    area.t = new List<Point>();
-            //    OpenGL gl = openGLControl.OpenGL;
-            //    gl.Color(color.R / 255.0, color.G / 255.0, color.B / 255.0, 0);
-            //    List<Point> searched = new List<Point>();
-            //    Queue<Point> frontier= new Queue<Point>();
-            //    frontier.Enqueue(Start);
-            //    Point temp=Start;
-            //    gl.Begin(OpenGL.GL_POINTS);
-            //    while (frontier.Count > 0)
-            //    {
-            //        temp = frontier.Dequeue();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            filled_area area;
+            area.color = color;
+            area.t = new List<Point>();
+            OpenGL gl = openGLControl.OpenGL;
+            gl.Color(color.R / 255.0, color.G / 255.0, color.B / 255.0, 0);
+            List<Point> searched = new List<Point>();
+            Queue<Point> frontier = new Queue<Point>();
+            frontier.Enqueue(Start);
+            Point temp = Start;
+            gl.Begin(OpenGL.GL_POINTS);
+            while (frontier.Count > 0)
+            {
+                temp = frontier.Dequeue();
 
-            //        gl.Vertex(temp.X, gl.RenderContextProvider.Height - temp.Y);
-            //        area.t.Add(temp);
+                gl.Vertex(temp.X, gl.RenderContextProvider.Height - temp.Y);
+                area.t.Add(temp);
 
-            //        if (!inList(temp, searched)) searched.Add(temp);
-            //        //phat sinh con 4 huong
-            //        Point temp1 = temp;
-            //        temp1.X = temp.X + 1;
-            //        Point temp2 = temp;
-            //        temp2.Y = temp.Y + 1;
-            //        Point temp3 = temp;
-            //        temp3.Y = temp.Y - 1;
-            //        Point temp4 = temp;
-            //        temp4.X = temp.X - 1;
-            //        if ((temp1.X >= 0 && temp1.X <= gl.RenderContextProvider.Width) && (temp1.Y >= 0 && temp1.Y <= gl.RenderContextProvider.Height && !inList(temp1,searched)) && !inList(temp1,RasterPoint) && !frontier.Contains(temp1)) frontier.Enqueue(temp1);
-            //        if ((temp2.X >= 0 && temp2.X <= gl.RenderContextProvider.Width) && (temp2.Y >= 0 && temp2.Y <= gl.RenderContextProvider.Height && !inList(temp2, searched)) && !inList(temp2, RasterPoint)&& !frontier.Contains(temp2)) frontier.Enqueue(temp2);
-            //        if ((temp3.X >= 0 && temp3.X <= gl.RenderContextProvider.Width) && (temp3.Y >= 0 && temp3.Y <= gl.RenderContextProvider.Height && !inList(temp3, searched)) && !inList(temp3, RasterPoint) && !frontier.Contains(temp3)) frontier.Enqueue(temp3);
-            //        if ((temp4.X >= 0 && temp4.X <= gl.RenderContextProvider.Width) && (temp4.Y >= 0 && temp4.Y <= gl.RenderContextProvider.Height && !inList(temp4, searched)) && !inList(temp4, RasterPoint)&& !frontier.Contains(temp4)) frontier.Enqueue(temp4);
+                if (!inList(temp, searched)) searched.Add(temp);
+                //phat sinh con 4 huong
+                Point temp1 = temp;
+                temp1.X = temp.X + 1;
+                Point temp2 = temp;
+                temp2.Y = temp.Y + 1;
+                Point temp3 = temp;
+                temp3.Y = temp.Y - 1;
+                Point temp4 = temp;
+                temp4.X = temp.X - 1;
+                if ((temp1.X >= 0 && temp1.X <= gl.RenderContextProvider.Width) && (temp1.Y >= 0 && temp1.Y <= gl.RenderContextProvider.Height && !inList(temp1, searched)) && !inList(temp1, RasterPoint) && !frontier.Contains(temp1)) frontier.Enqueue(temp1);
+                if ((temp2.X >= 0 && temp2.X <= gl.RenderContextProvider.Width) && (temp2.Y >= 0 && temp2.Y <= gl.RenderContextProvider.Height && !inList(temp2, searched)) && !inList(temp2, RasterPoint) && !frontier.Contains(temp2)) frontier.Enqueue(temp2);
+                if ((temp3.X >= 0 && temp3.X <= gl.RenderContextProvider.Width) && (temp3.Y >= 0 && temp3.Y <= gl.RenderContextProvider.Height && !inList(temp3, searched)) && !inList(temp3, RasterPoint) && !frontier.Contains(temp3)) frontier.Enqueue(temp3);
+                if ((temp4.X >= 0 && temp4.X <= gl.RenderContextProvider.Width) && (temp4.Y >= 0 && temp4.Y <= gl.RenderContextProvider.Height && !inList(temp4, searched)) && !inList(temp4, RasterPoint) && !frontier.Contains(temp4)) frontier.Enqueue(temp4);
 
-            //    }
-            //    gl.End();
-            //    gl.Flush();
-            //    sw.Stop();
-            //    textBox.Text = sw.Elapsed.ToString();
-            //    filled.Add(area);
-            //}
-            //private bool inList(Point t,List<Point> l)
-            //{
-            //    for(int i = 0; i < l.Count; i++)
-            //    {
-            //        if(l[i].X == t.X && l[i].Y == t.Y)return true;
-            //    }
-            //    return false;
-            //}
+            }
+            gl.End();
+            gl.Flush();
+            sw.Stop();
+            textBox.Text = sw.Elapsed.ToString();
+            filled.Add(area);
+        }
+        private bool inList(Point t, List<Point> l)
+        {
+            for (int i = 0; i < l.Count; i++)
+            {
+                if (l[i].X == t.X && l[i].Y == t.Y) return true;
+            }
+            return false;
+        }
 
-            //private void bt_DoDay_SelectedIndexChanged(object sender, EventArgs e)
-            //{
-            //    OpenGL gl = openGLControl.OpenGL;
-            //    gl.Begin(OpenGL.GL_POINTS);
+        private void bt_DoDay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            OpenGL gl = openGLControl.OpenGL;
+            gl.Begin(OpenGL.GL_POINTS);
 
-            //    //GLfloat lineWidthRange[2] = { 0.0f, 0.0f };
-            //    //glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
+            //GLfloat lineWidthRange[2] = { 0.0f, 0.0f };
+            //glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
 
-            //    if ((string)bt_DoDay.SelectedItem == "Small")
-            //    {
-            //        gl.PointSize(1);
-            //        gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
-            //    }
-            //    else if ((string)bt_DoDay.SelectedItem == "Medium")
-            //    {
-            //        gl.PointSize(5);
-            //        gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
-            //    }
-            //    else if ((string)bt_DoDay.SelectedItem == "Big")
-            //    {
-            //        gl.PointSize(10);
-            //        gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
-            //    }
-            //    gl.End();
-            //    gl.Flush();
+            if ((string)bt_DoDay.SelectedItem == "Small")
+            {
+                gl.PointSize(1);
+                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+            }
+            else if ((string)bt_DoDay.SelectedItem == "Medium")
+            {
+                gl.PointSize(5);
+                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+            }
+            else if ((string)bt_DoDay.SelectedItem == "Big")
+            {
+                gl.PointSize(10);
+                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+            }
+            gl.End();
+            gl.Flush();
         }
     }
 }

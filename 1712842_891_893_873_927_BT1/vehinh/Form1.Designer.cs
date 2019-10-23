@@ -67,9 +67,9 @@
             // 
             // btBangMau
             // 
-            this.btBangMau.Location = new System.Drawing.Point(1016, 12);
+            this.btBangMau.Location = new System.Drawing.Point(1051, 12);
             this.btBangMau.Name = "btBangMau";
-            this.btBangMau.Size = new System.Drawing.Size(84, 23);
+            this.btBangMau.Size = new System.Drawing.Size(75, 23);
             this.btBangMau.TabIndex = 2;
             this.btBangMau.Text = "Bang Mau";
             this.btBangMau.UseVisualStyleBackColor = true;
@@ -84,7 +84,7 @@
             this.openGLControl.OpenGLVersion = SharpGL.Version.OpenGLVersion.OpenGL2_1;
             this.openGLControl.RenderContextType = SharpGL.RenderContextType.FBO;
             this.openGLControl.RenderTrigger = SharpGL.RenderTrigger.TimerBased;
-            this.openGLControl.Size = new System.Drawing.Size(1088, 429);
+            this.openGLControl.Size = new System.Drawing.Size(1114, 429);
             this.openGLControl.TabIndex = 3;
             this.openGLControl.OpenGLInitialized += new System.EventHandler(this.openGLControl_OpenGLInitialized);
             this.openGLControl.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControl_OpenGLDraw);
@@ -157,12 +157,13 @@
             this.bt_luc_giac_deu.TabIndex = 10;
             this.bt_luc_giac_deu.Text = "Luc Giac Deu";
             this.bt_luc_giac_deu.UseVisualStyleBackColor = true;
+            this.bt_luc_giac_deu.Click += new System.EventHandler(this.bt_luc_giac_deu_Click);
             // 
             // bt_fill
             // 
-            this.bt_fill.Location = new System.Drawing.Point(635, 13);
+            this.bt_fill.Location = new System.Drawing.Point(634, 12);
             this.bt_fill.Name = "bt_fill";
-            this.bt_fill.Size = new System.Drawing.Size(75, 23);
+            this.bt_fill.Size = new System.Drawing.Size(79, 23);
             this.bt_fill.TabIndex = 12;
             this.bt_fill.Text = "To Mau (Fill)";
             this.bt_fill.UseVisualStyleBackColor = true;
@@ -175,18 +176,17 @@
             "Small",
             "Medium",
             "Big"});
-            this.bt_DoDay.Location = new System.Drawing.Point(925, 13);
+            this.bt_DoDay.Location = new System.Drawing.Point(958, 12);
             this.bt_DoDay.Name = "bt_DoDay";
-            this.bt_DoDay.Size = new System.Drawing.Size(85, 21);
+            this.bt_DoDay.Size = new System.Drawing.Size(87, 21);
             this.bt_DoDay.TabIndex = 13;
             this.bt_DoDay.Text = "Độ dài";
-            this.bt_DoDay.SelectedIndexChanged += new System.EventHandler(this.bt_DoDay_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1112, 508);
+            this.ClientSize = new System.Drawing.Size(1139, 508);
             this.Controls.Add(this.bt_DoDay);
             this.Controls.Add(this.bt_fill);
             this.Controls.Add(this.bt_luc_giac_deu);
@@ -202,7 +202,7 @@
             this.Controls.Add(this.btLine);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Click += new System.EventHandler(this.Form1_Click);
+            this.Click += new System.EventHandler(this.bt_luc_giac_deu_Click);
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

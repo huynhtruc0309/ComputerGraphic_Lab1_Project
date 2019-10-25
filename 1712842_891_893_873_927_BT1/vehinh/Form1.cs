@@ -12,6 +12,7 @@ using System.Diagnostics;
 
 namespace vehinh
 {
+    
     struct filled_area
     {
         public Color color;
@@ -26,8 +27,12 @@ namespace vehinh
         Point clicked;
         Color fill_color;
         int flag;
-        List<Point> RasterPoint;
+        int smallLineFlag;
+        int mediumLineFlag;
+        int bigLineFlag;
+        //List<Point> RasterPoint;
         List<filled_area> filled;
+        List<Shape> Hinh;
         public Form1()
         {
             InitializeComponent();
@@ -36,6 +41,10 @@ namespace vehinh
             flag = 1;
             fill_color = Color.White;
             filled = new List<filled_area>();
+            Hinh = new List<Shape>();
+            smallLineFlag = 1;
+            mediumLineFlag = bigLineFlag = 0;
+
         }
 
         private void btBangMau_Click(object sender, EventArgs e)
@@ -54,16 +63,36 @@ namespace vehinh
 
         private void openGLControl_OpenGLDraw(object sender, SharpGL.RenderEventArgs args)
         {
-            OpenGL gl = openGLControl.OpenGL;
-                gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 
-            gl.Begin(OpenGL.GL_POINTS);
-            for (int i = 0; i < RasterPoint.Count; i++)
+            OpenGL gl = openGLControl.OpenGL;
+            gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
+            if(smallLineFlag == 1)
             {
-                gl.Vertex(RasterPoint[i].X, gl.RenderContextProvider.Height - RasterPoint[i].Y);
+                gl.PointSize(1);
+                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
             }
-            gl.End();
-            gl.Flush();
+            else if (mediumLineFlag == 1)
+            {
+                gl.PointSize(5);
+                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+            }
+            else if(bigLineFlag == 1)
+            {
+                gl.PointSize(10);
+                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+            }
+            
+            for (int i = 0; i < Hinh.Count;i++)
+            {
+                gl.Begin(OpenGL.GL_POINTS);
+                for (int j = 0; j < Hinh[i].Points_Size(); j++)
+                {
+                    gl.Vertex(Hinh[i].Point_at(j).X, gl.RenderContextProvider.Height - Hinh[i].Point_at(j).Y);
+                }
+                gl.End();
+                gl.Flush();
+            }
+
 
             for (int i = 0; i < filled.Count; i++)
             {
@@ -90,6 +119,7 @@ namespace vehinh
             }
             else if (sh_shape == 2)
             {
+                veHinhChuNhat(pStart, pEnd);
                 //chu nhat
             }
             else if (sh_shape == 3)
@@ -99,15 +129,18 @@ namespace vehinh
             }
             else if (sh_shape == 4)
             {
+                veTamGiacDeu(pStart, pEnd);
                 //ve tam giac deu
             }
             else if (sh_shape == 5)
             {
                 //ve ngu giac
+                veNguGiacDeu(pStart, pEnd);
             }
             else if (sh_shape == 6)
             {
                 //ve 6 giac
+                veLucGiacDeu(pStart, pEnd);
             }
             else if (sh_shape == 7)
             {
@@ -121,7 +154,6 @@ namespace vehinh
 
         private void openGLControl_OpenGLInitialized(object sender, EventArgs e)
         {
-            RasterPoint = new List<Point>();
             OpenGL gl = openGLControl.OpenGL;
             clicked.X = -1;
             clicked.Y = -1;
@@ -183,9 +215,9 @@ namespace vehinh
                         p0 = p0 + x2delta_Y - x2delta_X;
                     }
 
-                    if (pStart.X < pEnd.X && pStart.Y < pEnd.Y)
+                    if (pStart.X < pEnd.X && pStart.Y <= pEnd.Y)
                         gl.Vertex(pStart.X + x0, gl.RenderContextProvider.Height - (pStart.Y + y0));
-                    if (pStart.X > pEnd.X && pStart.Y < pEnd.Y)
+                    if (pStart.X > pEnd.X && pStart.Y <= pEnd.Y)
                         gl.Vertex(pStart.X - x0, gl.RenderContextProvider.Height - (pStart.Y + y0)); //2
                     if (pStart.X > pEnd.X && pStart.Y > pEnd.Y)
                         gl.Vertex(pStart.X - x0, gl.RenderContextProvider.Height - (pStart.Y - y0)); //3
@@ -210,13 +242,13 @@ namespace vehinh
                         x0++;
                         p0 = p0 + x2delta_X - x2delta_Y;
                     }
-                    if (pStart.X < pEnd.X && pStart.Y < pEnd.Y)
+                    if (pStart.X <= pEnd.X && pStart.Y < pEnd.Y)
                         gl.Vertex(pStart.X + x0, gl.RenderContextProvider.Height - (pStart.Y + y0));
                     if (pStart.X > pEnd.X && pStart.Y < pEnd.Y)
                         gl.Vertex(pStart.X - x0, gl.RenderContextProvider.Height - (pStart.Y + y0)); //2
                     if (pStart.X > pEnd.X && pStart.Y > pEnd.Y)
                         gl.Vertex(pStart.X - x0, gl.RenderContextProvider.Height - (pStart.Y - y0)); //3
-                    if (pStart.X < pEnd.X && pStart.Y > pEnd.Y)
+                    if (pStart.X <= pEnd.X && pStart.Y > pEnd.Y)
                         gl.Vertex(pStart.X + x0, gl.RenderContextProvider.Height - (pStart.Y - y0)); //4
 
                     k++;
@@ -229,7 +261,21 @@ namespace vehinh
             sw.Stop();
             textBox.Text = sw.Elapsed.ToString();
         }
+        private void veTamGiacDeu(Point pStart,Point pEnd)
+        {
+            Point test=pStart;
+            Point test1 = pEnd;
+            test = pEnd;
+            test.Y = pStart.Y;
+            veDuongThang(pStart, test);
+            double delta = test.X - pStart.X;
+            test.X = pStart.X + (int)Math.Round(delta / 2);
+            test.Y = (int)Math.Round(pStart.Y + delta * Math.Sqrt(3) / 2);
+            test1.Y = pStart.Y;
+            veDuongThang(pStart, test);
+            veDuongThang(test, test1);
 
+        }
         private void veHinhTron(Point pStart,Point pEnd)
         {
             //Ham do thoi gian ve
@@ -390,59 +436,55 @@ namespace vehinh
         private void openGLControl_MouseUp(object sender, MouseEventArgs e)
         {
             pEnd = e.Location;
-            if (sh_shape == 1)
+            if (sh_shape == 0)
             {
-                double radius = Math.Sqrt((pStart.X - pEnd.X) * (pStart.X - pEnd.X) + (pStart.Y - pEnd.Y) * (pStart.Y - pEnd.Y));
-                OpenGL gl = openGLControl.OpenGL;
-                Point temp = pStart;
-                temp.X = pStart.X; temp.Y = (int)(Math.Round(pStart.Y + radius));
-                RasterPoint.Add(temp);
-                temp.X = pStart.X; temp.Y = (int)(Math.Round(pStart.Y - radius));
-                RasterPoint.Add(temp);
-                temp.X = (int)(pStart.X + Math.Round(radius)); temp.Y = pStart.Y;
-                RasterPoint.Add(temp);
-                temp.X = (int)(pStart.X - Math.Round(radius)); temp.Y = pStart.Y;
-                RasterPoint.Add(temp);
-                //ve tu tam roi tinh tien do do phuong trinh se la x^2 + y^2 = r
-                int x0 = 0;
-                int y0 = (int)Math.Round(radius);
-                double po = 5 / 4.0 - radius;
-                int k = 0;
-                while (x0 < y0)
-                {
-                    if (po < 0)
-                    {
-                        x0 = x0 + 1;
-                        po = po + 2 * x0 + 1;
-
-
-
-                    }
-                    else
-                    {
-                        x0 = x0 + 1;
-                        y0 = y0 - 1;
-                        po = po + 2 * x0 - 2 * y0 + 1;
-                    }
-                    temp.X = pStart.X + x0; temp.Y = (pStart.Y + y0);
-                    RasterPoint.Add(temp);
-                    temp.X = pStart.X + y0; temp.Y = (pStart.Y + x0);
-                    RasterPoint.Add(temp);
-                    temp.X = pStart.X + x0; temp.Y = (pStart.Y - y0);
-                    RasterPoint.Add(temp);
-                    temp.X = pStart.X + y0; temp.Y = (pStart.Y - x0);
-                    RasterPoint.Add(temp);
-                    temp.X = pStart.X - x0; temp.Y = (pStart.Y + y0);
-                    RasterPoint.Add(temp);
-                    temp.X = pStart.X - y0; temp.Y = (pStart.Y + x0);
-                    RasterPoint.Add(temp);
-                    temp.X = pStart.X - x0; temp.Y = (pStart.Y - y0);
-                    RasterPoint.Add(temp);
-                    temp.X = pStart.X - y0; temp.Y = (pStart.Y - x0);
-                    RasterPoint.Add(temp);
-                    k = k + 1;
-
-                }
+                Shape temp = new DuongThang(pStart,pEnd);
+                temp.LuuHinh(pStart,pEnd);
+                Hinh.Add(temp);
+                //ve duong thang
+            }
+            else if (sh_shape == 1)
+            {
+                Shape temp = new HinhTron(pStart, pEnd);
+                temp.LuuHinh(pStart, pEnd);
+                Hinh.Add(temp);
+                // ve duong tron
+            }
+            else if (sh_shape == 2)
+            {
+                Shape temp = new HinhChuNhat(pStart, pEnd);
+                temp.LuuHinh(pStart, pEnd);
+                Hinh.Add(temp);
+                //chu nhat
+            }
+            else if (sh_shape == 3)
+            {
+                Shape temp = new Ellipse(pStart, pEnd);
+                temp.LuuHinh(pStart, pEnd);
+                Hinh.Add(temp);
+                //ve ellipse
+            }
+            else if (sh_shape == 4)
+            {
+                Shape temp = new TamGiacDeu(pStart, pEnd);
+                temp.LuuHinh(pStart, pEnd);
+                Hinh.Add(temp);
+                //ve tam giac deu
+            }
+            else if (sh_shape == 5)
+            {
+                //ve ngu giac
+                Shape temp = new NguGiacDeu(pStart, pEnd);
+                temp.LuuHinh(pStart, pEnd);
+                Hinh.Add(temp);
+            }
+            else if (sh_shape == 6)
+            {
+                //ve 6 giac
+                Shape temp = new LucGiacDeu(pStart, pEnd);
+                temp.LuuHinh(pStart, pEnd);
+                Hinh.Add(temp);
+                // veLucGiacDeu(pStart, pEnd);
             }
         }
 
@@ -454,6 +496,7 @@ namespace vehinh
 
         private void bt_hinh_chu_nhat_Click(object sender, EventArgs e)
         {
+
             sh_shape = 2;
         }
 
@@ -513,11 +556,68 @@ namespace vehinh
                 temp3.Y = temp.Y - 1;
                 Point temp4 = temp;
                 temp4.X = temp.X - 1;
-                if ((temp1.X >= 0 && temp1.X <= gl.RenderContextProvider.Width) && (temp1.Y >= 0 && temp1.Y <= gl.RenderContextProvider.Height && !inList(temp1, searched)) && !inList(temp1, RasterPoint) && !frontier.Contains(temp1)) frontier.Enqueue(temp1);
-                if ((temp2.X >= 0 && temp2.X <= gl.RenderContextProvider.Width) && (temp2.Y >= 0 && temp2.Y <= gl.RenderContextProvider.Height && !inList(temp2, searched)) && !inList(temp2, RasterPoint) && !frontier.Contains(temp2)) frontier.Enqueue(temp2);
-                if ((temp3.X >= 0 && temp3.X <= gl.RenderContextProvider.Width) && (temp3.Y >= 0 && temp3.Y <= gl.RenderContextProvider.Height && !inList(temp3, searched)) && !inList(temp3, RasterPoint) && !frontier.Contains(temp3)) frontier.Enqueue(temp3);
-                if ((temp4.X >= 0 && temp4.X <= gl.RenderContextProvider.Width) && (temp4.Y >= 0 && temp4.Y <= gl.RenderContextProvider.Height && !inList(temp4, searched)) && !inList(temp4, RasterPoint) && !frontier.Contains(temp4)) frontier.Enqueue(temp4);
+                int flag1 = 0;
+                int flag2 = 0;
+                int flag3 = 0;
+                int flag4 = 0;// !inList(temp1, RasterPoint),frontier.Enqueue(temp4);
+                if ((temp1.X >= 0 && temp1.X <= gl.RenderContextProvider.Width) && (temp1.Y >= 0 && temp1.Y <= gl.RenderContextProvider.Height && !inList(temp1, searched)) && !frontier.Contains(temp1)) flag1 = 1;
+                if ((temp2.X >= 0 && temp2.X <= gl.RenderContextProvider.Width) && (temp2.Y >= 0 && temp2.Y <= gl.RenderContextProvider.Height && !inList(temp2, searched)) && !frontier.Contains(temp2)) flag2 = 1;
+                if ((temp3.X >= 0 && temp3.X <= gl.RenderContextProvider.Width) && (temp3.Y >= 0 && temp3.Y <= gl.RenderContextProvider.Height && !inList(temp3, searched)) && !frontier.Contains(temp3)) flag3 = 1;
+                if ((temp4.X >= 0 && temp4.X <= gl.RenderContextProvider.Width) && (temp4.Y >= 0 && temp4.Y <= gl.RenderContextProvider.Height && !inList(temp4, searched)) && !frontier.Contains(temp4)) flag4 = 1;
+                for(int i = 0; i < Hinh.Count; i++)
+                {
+                    for(int j = 0; j < Hinh[i].Points_Size(); j++)
+                    {
+                        if (inList(temp1, Hinh[i].getPoinsList()))
+                        {
+                            flag1 = 0;
+                            break;
+                        }
+                    }
+                    if (flag1 == 0) break;
+                }
+                if(flag1==1) frontier.Enqueue(temp1);
+                for (int i = 0; i < Hinh.Count; i++)
+                {
+                    for (int j = 0; j < Hinh[i].Points_Size(); j++)
+                    {
+                        if (inList(temp2, Hinh[i].getPoinsList()))
+                        {
+                            flag2 = 0;
+                            break;
+                        }
+                    }
+                    if (flag2 == 0) break;
+                }
+                if (flag2 == 1) frontier.Enqueue(temp2);
 
+                for (int i = 0; i < Hinh.Count; i++)
+                {
+                    for (int j = 0; j < Hinh[i].Points_Size(); j++)
+                    {
+                        if (inList(temp3, Hinh[i].getPoinsList()))
+                        {
+                            flag3 = 0;
+                            break;
+                        }
+                    }
+                    if (flag3 == 0) break;
+                }
+                if (flag3 == 1) frontier.Enqueue(temp3);
+
+                for (int i = 0; i < Hinh.Count; i++)
+                {
+                    for (int j = 0; j < Hinh[i].Points_Size(); j++)
+                    {
+                        if (inList(temp4, Hinh[i].getPoinsList()))
+                        {
+                            flag4 = 0;
+                            break;
+                        }
+                    }
+                    if (flag4 == 0) break;
+                }
+                if (flag4 == 1) frontier.Enqueue(temp4);
             }
             gl.End();
             gl.Flush();
@@ -534,6 +634,125 @@ namespace vehinh
             return false;
         }
 
+        private void veHinhChuNhat(Point pStart, Point pEnd)
+        {
+            Point temp1 = pStart;
+            temp1.Y = pEnd.Y;
+            Point temp3 = pEnd;
+            Point temp4 = pEnd;
+            temp4.Y = pStart.Y;
+            veDuongThang(pStart, temp1);
+            veDuongThang(pStart, temp4);
+            veDuongThang(temp4, temp3);
+            veDuongThang(temp3, temp1);
+        }
+
+        private void veNguGiacDeu(Point pStart,Point pEnd)
+        {
+            Point tempEnd = pEnd;
+            if (tempEnd.X >= pStart.X)
+            {
+                tempEnd.Y = pStart.Y;
+                double a = Math.Abs(tempEnd.X - pStart.X);
+                Point temp1 = pStart;
+                double goc1 = 72 * Math.PI / 180.0;//goc 72 rad
+                temp1.X = (int)Math.Round(pStart.X - a * Math.Cos(goc1));
+                temp1.Y = (int)Math.Round(pStart.Y + a * Math.Sin(goc1));
+                Point temp2 = pStart;
+                temp2.X = (pStart.X + tempEnd.X) / 2;
+                double goc2 = 54 * Math.PI / 180.0;//goc 72 rad
+                temp2.Y = (int)Math.Round(pStart.Y + a * Math.Tan(goc2) / 2 + a / (2 * Math.Cos(goc2)));
+                Point temp3 = tempEnd;
+                temp3.X = (int)Math.Round(tempEnd.X + a * Math.Cos(goc1));
+                temp3.Y = temp1.Y;
+                veDuongThang(pStart, temp1);
+                veDuongThang(temp1, temp2);
+                veDuongThang(temp2, temp3);
+                veDuongThang(temp3, tempEnd);
+                veDuongThang(pStart, tempEnd);
+            }
+            else
+            {
+                tempEnd.Y = pStart.Y;
+                double a = Math.Abs(tempEnd.X - pStart.X);
+                Point temp1 = pStart;
+                double goc1 = 72 * Math.PI / 180.0;//goc 72 rad
+                temp1.X = (int)Math.Round(pStart.X + a * Math.Cos(goc1));
+                temp1.Y = (int)Math.Round(pStart.Y + a * Math.Sin(goc1));
+                Point temp2 = pStart;
+                temp2.X = (pStart.X + tempEnd.X) / 2;
+                double goc2 = 54 * Math.PI / 180.0;//goc 72 rad
+                temp2.Y = (int)Math.Round(pStart.Y + a * Math.Tan(goc2) / 2 + a / (2 * Math.Cos(goc2)));
+                Point temp3 = tempEnd;
+                temp3.X = (int)Math.Round(tempEnd.X - a * Math.Cos(goc1));
+                temp3.Y = temp1.Y;
+                veDuongThang(pStart, temp1);
+                veDuongThang(temp1, temp2);
+                veDuongThang(temp2, temp3);
+                veDuongThang(temp3, tempEnd);
+                veDuongThang(pStart, tempEnd);
+
+
+
+            }
+
+
+
+
+
+        }
+
+        private void veLucGiacDeu(Point point,Point pEnd)
+        {
+            Point tempEnd = pEnd;
+            if (tempEnd.X >= pStart.X)
+            {
+                tempEnd.Y = pStart.Y;
+                double a = Math.Abs(tempEnd.X - pStart.X);
+                Point temp1 = pStart;
+                double goc1 = 60 * Math.PI / 180.0;
+                temp1.X = (int)Math.Round(pStart.X - a * Math.Cos(goc1));
+                temp1.Y = (int)Math.Round(pStart.Y + a * Math.Sin(goc1));
+                Point temp2 = pStart;
+                temp2.Y = (int)Math.Round(pStart.Y + a * Math.Tan(goc1));
+                Point temp3 = tempEnd;
+                temp3.Y = temp2.Y;
+                Point temp4 = tempEnd;
+                temp4.X = (int)Math.Round(tempEnd.X + a * Math.Cos(goc1));
+                temp4.Y = temp1.Y;
+                veDuongThang(pStart, temp1);
+                veDuongThang(temp1, temp2);
+                veDuongThang(temp2, temp3);
+                veDuongThang(temp3, temp4);
+                veDuongThang(temp4, tempEnd);
+                veDuongThang(pStart, tempEnd);
+
+            }
+            else
+            {
+                tempEnd.Y = pStart.Y;
+                double a = Math.Abs(tempEnd.X - pStart.X);
+                Point temp1 = pStart;
+                double goc1 = 60 * Math.PI / 180.0;
+                temp1.X = (int)Math.Round(pStart.X + a * Math.Cos(goc1));
+                temp1.Y = (int)Math.Round(pStart.Y + a * Math.Sin(goc1));
+                Point temp2 = pStart;
+                temp2.Y = (int)Math.Round(pStart.Y + a * Math.Tan(goc1));
+                Point temp3 = tempEnd;
+                temp3.Y = temp2.Y;
+                Point temp4 = tempEnd;
+                temp4.X = (int)Math.Round(tempEnd.X - a * Math.Cos(goc1));
+                temp4.Y = temp1.Y;
+                veDuongThang(pStart, temp1);
+                veDuongThang(temp1, temp2);
+                veDuongThang(temp2, temp3);
+                veDuongThang(temp3, temp4);
+                veDuongThang(temp4, tempEnd);
+                veDuongThang(pStart, tempEnd);
+            }
+
+
+            }
         private void bt_DoDay_SelectedIndexChanged(object sender, EventArgs e)
         {
             OpenGL gl = openGLControl.OpenGL;
@@ -544,18 +763,24 @@ namespace vehinh
 
             if ((string)bt_DoDay.SelectedItem == "Small")
             {
-                gl.PointSize(1);
-                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+                smallLineFlag = 1;
+                bigLineFlag = mediumLineFlag = 0;
+                /*gl.PointSize(1);
+                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);*/
             }
             else if ((string)bt_DoDay.SelectedItem == "Medium")
             {
-                gl.PointSize(5);
-                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+                smallLineFlag = bigLineFlag = 0;
+                mediumLineFlag = 1;
+                //gl.PointSize(5);
+                //gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
             }
             else if ((string)bt_DoDay.SelectedItem == "Big")
             {
-                gl.PointSize(10);
-                gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
+                smallLineFlag = mediumLineFlag = 0;
+                bigLineFlag = 1;
+                //gl.PointSize(10);
+                //gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
             }
             gl.End();
             gl.Flush();

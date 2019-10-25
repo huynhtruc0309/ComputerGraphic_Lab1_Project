@@ -181,6 +181,7 @@
             this.bt_DoDay.Size = new System.Drawing.Size(87, 21);
             this.bt_DoDay.TabIndex = 13;
             this.bt_DoDay.Text = "Độ dài";
+            this.bt_DoDay.SelectedIndexChanged += new System.EventHandler(this.bt_DoDay_SelectedIndexChanged);
             // 
             // Form1
             // 

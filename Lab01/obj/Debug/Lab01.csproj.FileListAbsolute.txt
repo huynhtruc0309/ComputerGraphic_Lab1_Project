@@ -1,0 +1,17 @@
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.Form1.resources
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.csproj.CoreCompileInputs.cache
+D:\DHMT\Lab01\Lab01\bin\Debug\Lab01.exe.config
+D:\DHMT\Lab01\Lab01\bin\Debug\Lab01.exe
+D:\DHMT\Lab01\Lab01\bin\Debug\Lab01.pdb
+D:\DHMT\Lab01\Lab01\bin\Debug\SharpGL.dll
+D:\DHMT\Lab01\Lab01\bin\Debug\SharpGL.SceneGraph.dll
+D:\DHMT\Lab01\Lab01\bin\Debug\SharpGL.WinForms.dll
+D:\DHMT\Lab01\Lab01\bin\Debug\SharpGL.xml
+D:\DHMT\Lab01\Lab01\bin\Debug\SharpGL.SceneGraph.xml
+D:\DHMT\Lab01\Lab01\bin\Debug\SharpGL.WinForms.xml
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.exe
+D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.pdb

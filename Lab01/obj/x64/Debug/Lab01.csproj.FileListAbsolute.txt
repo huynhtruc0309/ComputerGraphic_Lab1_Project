@@ -1,0 +1,16 @@
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\Lab01.exe.config
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\Lab01.exe
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\Lab01.pdb
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\SharpGL.dll
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\SharpGL.SceneGraph.dll
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\SharpGL.WinForms.dll
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\SharpGL.xml
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\SharpGL.SceneGraph.xml
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\x64\Debug\SharpGL.WinForms.xml
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\x64\Debug\Lab01.Form1.resources
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\x64\Debug\Lab01.Properties.Resources.resources
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\x64\Debug\Lab01.csproj.GenerateResource.cache
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\x64\Debug\Lab01.csproj.CopyComplete
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\x64\Debug\Lab01.exe
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\x64\Debug\Lab01.pdb
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\x64\Debug\Lab01.csprojAssemblyReference.cache

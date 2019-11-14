@@ -15,3 +15,53 @@ D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.Properties.Resources.resources
 D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.csproj.CopyComplete
 D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.exe
 D:\DHMT\Lab01\Lab01\obj\Debug\Lab01.pdb
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\Lab01.exe.config
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\Lab01.exe
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\Lab01.pdb
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.dll
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.WinForms.dll
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.xml
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.SceneGraph.xml
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.WinForms.xml
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.Form1.resources
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.exe
+C:\Users\uy201\Desktop\dohoa\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.pdb
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\Lab01.exe.config
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\Lab01.exe
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\Lab01.pdb
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.dll
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.WinForms.dll
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.xml
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.SceneGraph.xml
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\bin\Debug\SharpGL.WinForms.xml
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.Form1.resources
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.exe
+C:\Users\Admin\Downloads\ComputerGraphic_Lab1_Project-develop (2)\ComputerGraphic_Lab1_Project-develop\Lab01\obj\Debug\Lab01.pdb
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\Lab01.exe.config
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\Lab01.exe
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\Lab01.pdb
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.dll
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.SceneGraph.dll
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.WinForms.dll
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.xml
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.SceneGraph.xml
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.WinForms.xml
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.Form1.resources
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csproj.CoreCompileInputs.cache
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.exe
+D:\DHMT\ĐHMT - Thực hành Lab\Lab01\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.pdb

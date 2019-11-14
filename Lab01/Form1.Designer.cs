@@ -170,6 +170,7 @@
             this.bt_fill.TabIndex = 12;
             this.bt_fill.Text = "To Mau";
             this.bt_fill.UseVisualStyleBackColor = true;
+            this.bt_fill.Click += new System.EventHandler(this.bt_fill_Click);
             // 
             // bt_DoDay
             // 

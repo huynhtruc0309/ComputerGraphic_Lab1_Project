@@ -24,9 +24,11 @@ namespace Lab01
                 cl = Color.Black;
             }
         }
+
         public abstract class Object
         {
             public Point pStart, pEnd;
+            public List<Point> p = new List<Point>();
             public Color lineColor, bgColor; //Màu viền và màu nền
             public int lineSize; //Kích cỡ nét
            
@@ -76,24 +78,43 @@ namespace Lab01
             public virtual void colorObject(OpenGL gl)
             {
             }
-            public virtual void viewControlPoint(OpenGL gl) { }
+            public virtual void viewControlPoint(OpenGL gl)
+            {
+                gl.PointSize(lineSize + 3);
+                gl.Begin(OpenGL.GL_POINTS);
+                gl.Color(1.0, 0, 0, 0);
+                for (int i = 0; i < p.Count(); i++)
+                {
+                    gl.Vertex(p[i].X, gl.RenderContextProvider.Height - p[i].Y);
+                }
+                gl.End();
+            }
             
             //Hàm xoay ảnh
             public virtual void affine(float degree) { }
 
             //Hàm di chuyển ảnh
             public virtual void move(int dX, int dY) { }
+
+            //Lấy đỉnh
+            public virtual List<Point> Get()
+            {
+                return p;
+            }
         }
 
         // Class đường thẳng
         public class Line : Object
         {
             private Point A, B;
+
             public Line() { }
             public override void setPoint(Point start, Point end)
             {
                 A = start;
                 B = end;
+                p.Add(A);
+                p.Add(B);
             }
 
             public override void drawObject(OpenGL gl)
@@ -106,18 +127,6 @@ namespace Lab01
 
                 gl.End();
                 gl.LineWidth(lineSize);
-            }
-
-            // Hiện cái control point
-            public override void viewControlPoint(OpenGL gl)
-            {
-                gl.PointSize(lineSize + 3);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Color(1.0, 0, 0, 0);
-                gl.Vertex(A.X, gl.RenderContextProvider.Height - A.Y);
-                gl.Vertex(B.X, gl.RenderContextProvider.Height - B.Y);
-
-                gl.End();
             }
 
             //Hàm xoay ảnh
@@ -163,6 +172,7 @@ namespace Lab01
                 B.X = end.X;
                 D = end;
                 D.X = start.X;
+                p.Add(A); p.Add(B); p.Add(C); p.Add(D);
             }
             //Hàm vẽ hình
             public override void drawObject(OpenGL gl)
@@ -177,19 +187,6 @@ namespace Lab01
 
                 gl.End();
                 gl.LineWidth(lineSize);
-            }
-            
-            //Hàm hiện điểm control
-            public override void viewControlPoint(OpenGL gl)
-            {
-                gl.PointSize(lineSize + 3);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Color(1.0, 0, 0, 0);
-                gl.Vertex(A.X, gl.RenderContextProvider.Height - A.Y);
-                gl.Vertex(B.X, gl.RenderContextProvider.Height - B.Y);
-                gl.Vertex(C.X, gl.RenderContextProvider.Height - C.Y);
-                gl.Vertex(D.X, gl.RenderContextProvider.Height - D.Y);
-                gl.End();
             }
 
             //Hàm xoay ảnh
@@ -245,6 +242,7 @@ namespace Lab01
                 B = end;
                 C.X = start.X;
                 C.Y = end.Y;
+                p.Add(A); p.Add(B); p.Add(C);
             }
             //Hàm vẽ hình
             public override void drawObject(OpenGL gl)
@@ -258,17 +256,6 @@ namespace Lab01
 
                 gl.End();
                 gl.LineWidth(lineSize);
-            }
-            //Hàm tô màu
-            public override void viewControlPoint(OpenGL gl)
-            {
-                gl.PointSize(lineSize + 3);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Color(255 / 255.0, 0, 0, 0);
-                gl.Vertex(A.X, gl.RenderContextProvider.Height - A.Y);
-                gl.Vertex(B.X, gl.RenderContextProvider.Height - B.Y);
-                gl.Vertex(C.X, gl.RenderContextProvider.Height - C.Y);
-                gl.End();
             }
 
             //Hàm xoay ảnh
@@ -320,6 +307,17 @@ namespace Lab01
                 if (Math.Abs(start.X - center.X) >= Math.Abs(start.Y - center.Y))
                     R = Math.Abs(start.X - center.X);
                 else R = Math.Abs(start.Y - center.Y);
+
+                Point C = new Point(center.X - R, center.Y + 2 * R);
+                Point B = new Point(center.X - R, center.Y + R);
+                Point A = new Point(center.X - R, center.Y);
+                Point H = new Point(center.X, center.Y);
+                Point G = new Point(center.X + R, center.Y);
+                Point F = new Point(center.X + R, center.Y + R);
+                Point E = new Point(center.X + R, center.Y + 2 * R);
+                Point D = new Point(center.X, center.Y + 2 * R);
+                Point K = new Point(center.X, center.Y + R);
+                p.Add(A); p.Add(B); p.Add(C); p.Add(D); p.Add(E); p.Add(F); p.Add(G); p.Add(H); p.Add(K);
             }
 
             //phương thức hiển thị 8 điểm đặc biết đối xứng trong hình tròn
@@ -360,25 +358,6 @@ namespace Lab01
                 gl.End();
                 gl.PointSize(lineSize);
             }
-            //Hàm đặt điểm control
-            public override void viewControlPoint(OpenGL gl)
-            {
-                gl.PointSize(lineSize + 3);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Color(1.0, 0, 0, 0);
-                
-                gl.Vertex(center.X + R, gl.RenderContextProvider.Height - center.Y - 2 * R);
-                gl.Vertex(center.X + R, gl.RenderContextProvider.Height - center.Y - R);
-                gl.Vertex(center.X + R, gl.RenderContextProvider.Height - center.Y);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - center.Y - 2 * R);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - center.Y - R);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - center.Y);
-                gl.Vertex(center.X - R, gl.RenderContextProvider.Height - center.Y - 2 * R);
-                gl.Vertex(center.X - R, gl.RenderContextProvider.Height - center.Y - R);
-                gl.Vertex(center.X - R, gl.RenderContextProvider.Height - center.Y);
-                
-                gl.End();
-            }
 
             //Hàm tịnh tiến ảnh
             public override void move(int dX, int dY)
@@ -401,6 +380,17 @@ namespace Lab01
                 center.Y = (start.Y + end.Y) / 2;
                 Rx = Math.Abs(start.X - center.X);
                 Ry = Math.Abs(start.Y - center.Y);
+
+                Point C = new Point(center.X - Rx, center.Y + Ry); 
+                Point B = new Point(center.X - Rx, center.Y); 
+                Point A = new Point(center.X - Rx, center.Y - Ry); 
+                Point H = new Point(center.X, center.Y - Ry);
+                Point G = new Point(center.X + Rx, center.Y - Ry); 
+                Point F = new Point(center.X + Rx, center.Y); 
+                Point E = new Point(center.X + Rx, center.Y + Ry); 
+                Point D = new Point(center.X, center.Y + Ry); 
+                Point K = new Point(center.X, center.Y);
+                p.Add(A); p.Add(B); p.Add(C); p.Add(D); p.Add(E); p.Add(F); p.Add(G); p.Add(H); p.Add(K);
             }
 
             //Xuất 4 điểm đối xứng
@@ -467,25 +457,6 @@ namespace Lab01
                 gl.End();
                 gl.PointSize(lineSize);
             }
-            //Hàm đặt điểm control
-            public override void viewControlPoint(OpenGL gl)
-            {
-                gl.PointSize(lineSize + 3);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Color(1.0, 0, 0, 0);
-
-                gl.Vertex(center.X + Rx, gl.RenderContextProvider.Height - center.Y - Ry);
-                gl.Vertex(center.X + Rx, gl.RenderContextProvider.Height - center.Y);
-                gl.Vertex(center.X + Rx, gl.RenderContextProvider.Height - center.Y + Ry);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - center.Y - Ry);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - center.Y);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - center.Y + Ry);
-                gl.Vertex(center.X - Rx, gl.RenderContextProvider.Height - center.Y - Ry);
-                gl.Vertex(center.X - Rx, gl.RenderContextProvider.Height - center.Y);
-                gl.Vertex(center.X - Rx, gl.RenderContextProvider.Height - center.Y + Ry);
-
-                gl.End();
-            }
 
             //Hàm xoay ảnh
             public override void affine(float degree)
@@ -520,7 +491,19 @@ namespace Lab01
                 if (Math.Abs(start.X - center.X) >= Math.Abs(start.Y - center.Y))
                     R = Math.Abs(start.X - center.X);
                 else R = Math.Abs(start.Y - center.Y);
+
+                float grad = (float)((72 * 3.14) / 180);
+
+                p.Add(new Point(center.X, center.Y - R));
+                for (int i = 1; i < 5; i++)
+                {
+                    //Thực hiện phép xoay pixel
+                    int x = (int)(-Math.Sin(i * grad) * R);
+                    int y = (int)(Math.Cos(i * grad) * R);
+                    p.Add(new Point(center.X + x, center.Y - y));
+                }
             }
+
             //Hàm vẽ hình
             public override void drawObject(OpenGL gl)
             {
@@ -539,24 +522,6 @@ namespace Lab01
                 }
                 gl.End();
                 gl.LineWidth(lineSize);
-            }
-            //Hàm đặt điểm control
-            public override void viewControlPoint(OpenGL gl)
-            {
-                gl.PointSize(lineSize + 3);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Color(1.0, 0, 0, 0);
-                //Chuyển đổi từ độ sang Radian
-                float grad = (float)((72 * 3.14) / 180);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - (center.Y - R));
-                for (int i = 1; i < 5; i++)
-                {
-                    //Thực hiện phép xoay pixel
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    gl.Vertex(center.X + x, gl.RenderContextProvider.Height - (center.Y - y));
-                }
-                gl.End();
             }
 
             //Hàm xoay ảnh
@@ -587,6 +552,16 @@ namespace Lab01
                 if (Math.Abs(start.X - center.X) >= Math.Abs(start.Y - center.Y))
                     R = Math.Abs(start.X - center.X);
                 else R = Math.Abs(start.Y - center.Y);
+
+                float grad = (float)((60 * 3.14) / 180);
+                p.Add(new Point(center.X, center.Y - R));
+                for (int i = 1; i < 6; i++)
+                {
+                    //Thực hiện phép xoay pixel
+                    int x = (int)(-Math.Sin(i * grad) * R);
+                    int y = (int)(Math.Cos(i * grad) * R);
+                    p.Add(new Point(center.X + x, center.Y - y));
+                }
             }
             //Hàm vẽ hình
             public override void drawObject(OpenGL gl)
@@ -607,23 +582,7 @@ namespace Lab01
                 gl.End();
                 gl.LineWidth(lineSize);
             }
-            //Hàm đặt điểm control
-            public override void viewControlPoint(OpenGL gl)
-            {
-                gl.PointSize(lineSize + 3);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Color(1.0, 0, 0, 0);
-                float grad = (float)((60 * 3.14) / 180);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - (center.Y - R));
-                for (int i = 1; i < 6; i++)
-                {
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    gl.Vertex(center.X + x, gl.RenderContextProvider.Height - (center.Y - y));
-                }
-                gl.End();
-            }
-
+            
             //Hàm xoay ảnh
             public override void affine(float degree)
             {
@@ -767,6 +726,7 @@ namespace Lab01
             Color cl = Color.FromArgb(0,(int)pixel[0], (int)pixel[1], (int)pixel[2]);
             return cl;
         }
+
         private void tomau(Point p, Color color, Object[] arr, OpenGL gl )
         {
 
@@ -833,9 +793,7 @@ namespace Lab01
             }
 
             tatcavungto.Add(vt);
-            
         }
-
 
         private void openGLControl_OpenGLDraw(object sender, SharpGL.RenderEventArgs args)
         {
@@ -874,6 +832,7 @@ namespace Lab01
                 arrObj[i].drawObject(gl);
                 arrObj[i].colorObject(gl);
             }
+
             if(shShape == 7)
             {
                 userBgColor = userLineColor;

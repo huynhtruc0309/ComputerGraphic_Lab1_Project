@@ -11,12 +11,12 @@ using System.Windows.Forms;
 using System.Diagnostics;
 
 namespace Lab01
-{   
+{
     public partial class Form1 : Form
     {
         class vungto
         {
-           public List<Point> p;
+            public List<Point> p;
             public Color cl;
             public vungto()
             {
@@ -25,13 +25,14 @@ namespace Lab01
             }
         }
 
+        List<List<List<int>>> bitmap;
         public abstract class Object
         {
             public Point pStart, pEnd;
             public List<Point> p = new List<Point>();
             public Color lineColor, bgColor; //Màu viền và màu nền
             public int lineSize; //Kích cỡ nét
-           
+
             //Constructor
             public Object()
             {
@@ -62,7 +63,7 @@ namespace Lab01
             //Độ dày nét
             public void setLineSize(int userChoice)
             {
-                switch(userChoice)
+                switch (userChoice)
                 {
                     case 1: lineSize = 5; break; //Small
                     case 2: lineSize = 10; break; //Medium
@@ -71,7 +72,7 @@ namespace Lab01
             }
 
             //Thiết lập toạ độ khi di chuyển chuột
-            public virtual void setPoint(Point start, Point end) {}
+            public virtual void setPoint(Point start, Point end) { }
 
             //Hàm vẽ hình, tô màu và hiển thị điểm điều khiển
             public virtual void drawObject(OpenGL gl) { }
@@ -89,7 +90,7 @@ namespace Lab01
                 }
                 gl.End();
             }
-            
+
             //Hàm xoay ảnh
             public virtual void affine(float degree) { }
 
@@ -237,7 +238,7 @@ namespace Lab01
             //Hàm đặt điểm
             public override void setPoint(Point start, Point end)
             {
-                A.X = (start.X + end.X)/2;
+                A.X = (start.X + end.X) / 2;
                 A.Y = start.Y;
                 B = end;
                 C.X = start.X;
@@ -381,14 +382,14 @@ namespace Lab01
                 Rx = Math.Abs(start.X - center.X);
                 Ry = Math.Abs(start.Y - center.Y);
 
-                Point C = new Point(center.X - Rx, center.Y + Ry); 
-                Point B = new Point(center.X - Rx, center.Y); 
-                Point A = new Point(center.X - Rx, center.Y - Ry); 
+                Point C = new Point(center.X - Rx, center.Y + Ry);
+                Point B = new Point(center.X - Rx, center.Y);
+                Point A = new Point(center.X - Rx, center.Y - Ry);
                 Point H = new Point(center.X, center.Y - Ry);
-                Point G = new Point(center.X + Rx, center.Y - Ry); 
-                Point F = new Point(center.X + Rx, center.Y); 
-                Point E = new Point(center.X + Rx, center.Y + Ry); 
-                Point D = new Point(center.X, center.Y + Ry); 
+                Point G = new Point(center.X + Rx, center.Y - Ry);
+                Point F = new Point(center.X + Rx, center.Y);
+                Point E = new Point(center.X + Rx, center.Y + Ry);
+                Point D = new Point(center.X, center.Y + Ry);
                 Point K = new Point(center.X, center.Y);
                 p.Add(A); p.Add(B); p.Add(C); p.Add(D); p.Add(E); p.Add(F); p.Add(G); p.Add(H); p.Add(K);
             }
@@ -527,7 +528,7 @@ namespace Lab01
             //Hàm xoay ảnh
             public override void affine(float degree)
             {
-                
+
             }
 
             //Hàm tịnh tiến ảnh
@@ -582,11 +583,11 @@ namespace Lab01
                 gl.End();
                 gl.LineWidth(lineSize);
             }
-            
+
             //Hàm xoay ảnh
             public override void affine(float degree)
             {
-                
+
             }
 
             //Hàm tịnh tiến ảnh
@@ -606,19 +607,19 @@ namespace Lab01
         private int shShape;//Biến chọn chế độ vẽ 0 = Line,1 = Circle, 2 = Hinh Chu nhat, 3 = Ellipse, 4 = Tam Giac Deu, 5 = Ngu Giac Deu, 6 = Luc Giac Deu
 
         private Point pStart, pEnd; // Biến control màn hình
-        
+
         private int numObj, nowId, idViewPoint; //Biến số lượng hình vẽ, biến kiểm soát hình nào được chọn, biến hiện controlPoint
         Object[] arrObj = new Object[100]; //Mảng các hình được vẽ
         private List<vungto> tatcavungto;
 
         private Stopwatch st = new Stopwatch();
-
+        private byte[] pixel;
         // Khởi tạo màn hình ban đầu
         private Point toadomau;
         public Form1()
         {
             InitializeComponent();
-
+            
             //Cài đặt mặc định với đối tượng hình
             shShape = 0; //Mở đầu là đường thẳng
             userLineColor = Color.White; //Màu nét
@@ -632,6 +633,7 @@ namespace Lab01
             toadomau.X = -1;
             toadomau.Y = -1;
             tatcavungto = new List<vungto>();
+          
         }
 
         //Nút vẽ hình được chọn
@@ -693,13 +695,13 @@ namespace Lab01
         {
             shShape = 7;
         }
-        
+
         //Nút chọn kích thước nét
         private void bt_DoDay_SelectedIndexChanged(object sender, EventArgs e)
         {
             OpenGL gl = openGLControl.OpenGL;
             gl.Begin(OpenGL.GL_POINTS);
-            
+
             if ((string)bt_DoDay.SelectedItem == "Small")
             {
                 userLineSize = 1;
@@ -718,33 +720,34 @@ namespace Lab01
 
         //Các hàm vẽ mặc định trong SharpGL
         //Hàm vẽ chính trong chương trình
-        Color GetColor(int x,int y, OpenGL gl)
+        Color GetColor(int x, int y, OpenGL gl)
         {
+            
 
-            byte[] pixel = new byte[3];
-            gl.ReadPixels(x, y, 1, 1, OpenGL.GL_RGB, OpenGL.GL_UNSIGNED_BYTE, pixel);
-            Color cl = Color.FromArgb(0,(int)pixel[0], (int)pixel[1], (int)pixel[2]);
+            Color cl = Color.FromArgb(0, (int)bitmap[y][x][0], (int)bitmap[y][x][1], (int)bitmap[y][x][2]);
             return cl;
         }
 
-        private void tomau(Point p, Color color, Object[] arr, OpenGL gl )
+        private void tomaureal(Point p,Color color,Object[]arr,OpenGL gl)
         {
-
             List<Color> all_b_color = new List<Color>();
-            for(int i = 0; i < numObj; i++)
+            for (int i = 0; i < numObj; i++)
             {
                 int flag = 1;
-               for(int j = 0; j < all_b_color.Count; j++)
+                for (int j = 0; j < all_b_color.Count; j++)
                 {
-                    if (arr[j].lineColor == arr[i].lineColor) {flag = 0;
+                    if (arr[j].lineColor == arr[i].lineColor)
+                    {
+                        flag = 0;
                         break;
-                        }
+                    }
                 }
-               if(flag == 1)
+                if (flag == 1)
                 {
                     all_b_color.Add(arr[i].lineColor);
                 }
             }
+
             Queue<Point> diemdangxet = new Queue<Point>();
             diemdangxet.Enqueue(p);
             vungto vt = new vungto();
@@ -754,26 +757,32 @@ namespace Lab01
                 Point temp = diemdangxet.Dequeue();
                 vt.p.Add(temp);
                 gl.Color(color.R / 255.0, color.G / 255.0, color.B / 255.0, 0);
-                gl.Begin(OpenGL.GL_POINTS);
-                gl.Vertex(temp.X, temp.Y);
-                gl.End();
-                gl.Flush();
+                bitmap[temp.Y][temp.X][0] = color.R;
+                bitmap[temp.Y][temp.X][1] = color.G;
+                bitmap[temp.Y][temp.X][2] = color.B;
+                bitmap[temp.Y][temp.X][3] = 0;
                 Point p1 = temp;
                 Point p2 = temp;
                 Point p3 = temp;
-                Point p4=temp;
+                Point p4 = temp;
                 p1.X = temp.X - 1;
                 p2.X = temp.X + 1;
                 p3.Y = temp.Y - 1;
                 p4.Y = temp.Y + 1;
-                Color color1 = GetColor(p1.X, p1.Y, gl);
-                Color color2 = GetColor(p2.X, p2.Y, gl);
-                Color color3 = GetColor(p3.X, p3.Y, gl);
-                Color color4 = GetColor(p4.X, p4.Y, gl);
                 int flag1 = 1, flag2 = 1, flag3 = 1, flag4 = 1;
-                for(int i = 0; i < all_b_color.Count; i++)
+                if (p1.X < 0 || p1.Y < 0 || p1.X >= gl.RenderContextProvider.Width || p1.Y >= gl.RenderContextProvider.Height || diemdangxet.Contains(p1)) flag1 = 0;
+                if (p2.X < 0 || p2.Y < 0 || p2.X >= gl.RenderContextProvider.Width || p2.Y >= gl.RenderContextProvider.Height || diemdangxet.Contains(p2)) flag2 = 0;
+                if (p3.X < 0 || p3.Y < 0 || p3.X >= gl.RenderContextProvider.Width || p3.Y >= gl.RenderContextProvider.Height || diemdangxet.Contains(p3)) flag3 = 0;
+                if (p4.X < 0 || p4.Y < 0 || p4.X >= gl.RenderContextProvider.Width || p4.Y >= gl.RenderContextProvider.Height || diemdangxet.Contains(p4)) flag4 = 0;
+                Color color1 = Color.White, color2 = Color.White, color3 = Color.White, color4 = Color.White;
+                if(flag1==1)color1 = GetColor(p1.X, p1.Y, gl);
+                if(flag2==1)color2 = GetColor(p2.X, p2.Y, gl);
+                if(flag3==1)color3 = GetColor(p3.X, p3.Y, gl);
+                if(flag4==1)color4 = GetColor(p4.X, p4.Y, gl);
+                
+                for (int i = 0; i < all_b_color.Count; i++)
                 {
-                    if ((color1.R == all_b_color[i].R && color1.G == all_b_color[i].G) &&(color1.B == all_b_color[i].B) ||
+                    if ((color1.R == all_b_color[i].R && color1.G == all_b_color[i].G) && (color1.B == all_b_color[i].B) ||
                         (color1.R == color.R && color1.G == color.G && color1.B == color.B)) flag1 = 0;
                     if ((color2.R == all_b_color[i].R && color2.G == all_b_color[i].G) && (color2.B == all_b_color[i].B) ||
                         (color2.R == color.R && color2.G == color.G && color2.B == color.B)) flag2 = 0;
@@ -782,10 +791,7 @@ namespace Lab01
                     if ((color4.R == all_b_color[i].R && color4.G == all_b_color[i].G) && (color4.B == all_b_color[i].B) ||
                         (color4.R == color.R && color4.G == color.G && color4.B == color.B)) flag4 = 0;
                 }
-                if (p1.X < 0 || p1.Y < 0 || p1.X > gl.RenderContextProvider.Width || p1.Y > gl.RenderContextProvider.Height||diemdangxet.Contains(p1)) flag1 = 0;
-                if (p2.X < 0 || p2.Y < 0 || p2.X > gl.RenderContextProvider.Width || p2.Y > gl.RenderContextProvider.Height || diemdangxet.Contains(p2)) flag2 = 0;
-                if (p3.X < 0 || p3.Y < 0 || p3.X > gl.RenderContextProvider.Width || p3.Y > gl.RenderContextProvider.Height || diemdangxet.Contains(p3)) flag3 = 0;
-                if (p4.X < 0 || p4.Y < 0 || p4.X > gl.RenderContextProvider.Width || p4.Y > gl.RenderContextProvider.Height || diemdangxet.Contains(p4)) flag4 = 0;
+
                 if (flag1 == 1) diemdangxet.Enqueue(p1);
                 if (flag2 == 1) diemdangxet.Enqueue(p2);
                 if (flag3 == 1) diemdangxet.Enqueue(p3);
@@ -793,6 +799,36 @@ namespace Lab01
             }
 
             tatcavungto.Add(vt);
+        }
+        private void tomau(Point p, Color color, Object[] arr, OpenGL gl)
+        {
+            gl.ReadPixels(0, 0, gl.RenderContextProvider.Width
+                    , gl.RenderContextProvider.Height, OpenGL.GL_RGBA, OpenGL.GL_UNSIGNED_BYTE, pixel);
+            int pixelindex = 0;
+            for(int i = 0; i < bitmap.Count; i++)
+            {
+                for(int j = 0; j < bitmap[i].Count; j++)
+                {
+                    for(int z = 0; z < 4; z++)
+                    {
+                        bitmap[i][j][z] = pixel[pixelindex++];
+
+                    }
+                }
+            }
+            tomaureal(p, color, arr, gl);
+            pixelindex = 0;
+            for (int i = 0; i < bitmap.Count; i++)
+            {
+                for (int j = 0; j < bitmap[i].Count; j++)
+                {
+                    for (int z = 0; z < 4; z++)
+                    {
+                        pixel[pixelindex++]= (byte)bitmap[i][j][z];
+                    }
+                }
+            }
+            gl.DrawPixels(gl.RenderContextProvider.Width, gl.RenderContextProvider.Height, OpenGL.GL_UNSIGNED_BYTE,pixel);
         }
 
         private void openGLControl_OpenGLDraw(object sender, SharpGL.RenderEventArgs args)
@@ -804,7 +840,7 @@ namespace Lab01
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 
             //Tạo ra một thực thể hình mới
-            switch(shShape)
+            switch (shShape)
             {
                 case 0: arrObj[numObj] = new Line(); break;
                 case 1: arrObj[numObj] = new Circle(); break;
@@ -813,7 +849,7 @@ namespace Lab01
                 case 4: arrObj[numObj] = new Triangle(); break;
                 case 5: arrObj[numObj] = new Pentagon(); break;
                 case 6: arrObj[numObj] = new Hexagon(); break;
-             //   case 7: arrObj[numObj].colorObject(gl); break;
+                //   case 7: arrObj[numObj].colorObject(gl); break;
                 default: break;
             }
 
@@ -833,26 +869,26 @@ namespace Lab01
                 arrObj[i].colorObject(gl);
             }
 
-            if(shShape == 7)
+            if (shShape == 7)
             {
-                userBgColor = userLineColor;
-                if(toadomau.X != -1 && toadomau.Y != -1)
+                //userBgColor = userLineColor;
+                if (toadomau.X != -1 && toadomau.Y != -1)
                 {
                     toadomau.Y = gl.RenderContextProvider.Height - toadomau.Y;
                     gl.PointSize(1);
                     gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
-                    tomau(toadomau, userBgColor,arrObj,gl);
+                    tomau(toadomau, userBgColor, arrObj, gl);
                 }
                 toadomau.X = -1;
                 toadomau.Y = -1;
             }
             gl.PointSize(1);
             gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
-            for(int i = 0; i < tatcavungto.Count; i++)
+            for (int i = 0; i < tatcavungto.Count; i++)
             {
                 gl.Color(tatcavungto[i].cl.R / 255.0, tatcavungto[i].cl.G / 255.0, tatcavungto[i].cl.B / 255.0, 0);
                 gl.Begin(OpenGL.GL_POINTS);
-                for(int j = 0; j < tatcavungto[i].p.Count; j++)
+                for (int j = 0; j < tatcavungto[i].p.Count; j++)
                 {
                     gl.Vertex(tatcavungto[i].p[j].X, tatcavungto[i].p[j].Y);
                 }
@@ -872,12 +908,39 @@ namespace Lab01
         {
             //Khai báo biến OpenGL gl
             OpenGL gl = openGLControl.OpenGL;
+            pixel = new byte[4 * (gl.RenderContextProvider.Width) * (gl.RenderContextProvider.Height)];
             //Xóa màng hình, trả chế độ và load view
             gl.ClearColor(0, 0, 0, 0);
             gl.MatrixMode(OpenGL.GL_PROJECTION);
             gl.LoadIdentity();
+            int h = gl.RenderContextProvider.Height;
+            bitmap = new List<List<List<int>>>();
+            for(int i = 0; i < h; i++)
+            {
+                List<List<int>>temp =  new List<List<int>>();
+                for(int j = 0; j < gl.RenderContextProvider.Width; j++)
+                {
+                    List<int> temp1 = new List<int>();
+                    for (int z = 0; z < 4; z++)
+                    {
+                        int u = 0;
+                        temp1.Add(u);
+
+                    }
+                    temp.Add(temp1);
+                }
+                bitmap.Add(temp);
+            }
+         /*   for(int i = 0; i < bitmap.Count; i++)
+            {
+                for(int j = 0; j < bitmap[i].Count; j++)
+                {
+                    bitmap[i][j] = new List<int>(3);
+                }
+            }*/
+            
         }
-        
+
         //Hàm resized
         private void openGLControl_Resized(object sender, EventArgs e)
         {
@@ -906,6 +969,13 @@ namespace Lab01
         {
             shShape = 7;
         }
+
+        private void Keo_Gian_MouseDown(object sender, MouseEventArgs e)
+        {
+            shShape = 8;
+        }
+
+
 
         //Khi di chuyển chuột trên màn hình
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)

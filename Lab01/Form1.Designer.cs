@@ -44,6 +44,7 @@
             this.bt_DoDay = new System.Windows.Forms.ComboBox();
             this.btMauVien = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.Keo_Gian = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -200,11 +201,22 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // Keo_Gian
+            // 
+            this.Keo_Gian.Location = new System.Drawing.Point(174, 41);
+            this.Keo_Gian.Name = "Keo_Gian";
+            this.Keo_Gian.Size = new System.Drawing.Size(75, 23);
+            this.Keo_Gian.TabIndex = 15;
+            this.Keo_Gian.Text = "Keo Gian";
+            this.Keo_Gian.UseVisualStyleBackColor = true;
+            this.Keo_Gian.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Keo_Gian_MouseDown);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1139, 542);
+            this.Controls.Add(this.Keo_Gian);
             this.Controls.Add(this.btMauVien);
             this.Controls.Add(this.bt_DoDay);
             this.Controls.Add(this.bt_fill);
@@ -246,6 +258,7 @@
         private System.Windows.Forms.ComboBox bt_DoDay;
         private System.Windows.Forms.Button btMauVien;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button Keo_Gian;
     }
 }
 

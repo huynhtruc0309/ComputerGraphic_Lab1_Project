@@ -114,3 +114,18 @@ C:\Users\uy201\Desktop\dohoa1\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\Sharp
 C:\Users\uy201\Desktop\dohoa1\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.SceneGraph.xml
 C:\Users\uy201\Desktop\dohoa1\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.WinForms.xml
 C:\Users\uy201\Desktop\dohoa1\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\Lab01.exe.config
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\Lab01.exe
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\Lab01.pdb
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.dll
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.WinForms.dll
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.xml
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.SceneGraph.xml
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\bin\Debug\SharpGL.WinForms.xml
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csprojResolveAssemblyReference.cache
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.Form1.resources
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csproj.GenerateResource.Cache
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.exe
+C:\Users\Chep Phim HD\Documents\Downloads\vehinh\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.pdb

@@ -45,6 +45,8 @@
             this.btMauVien = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.Keo_Gian = new System.Windows.Forms.Button();
+            this.bt_select = new System.Windows.Forms.Button();
+            this.bt_scanline = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -175,6 +177,7 @@
             // 
             // bt_DoDay
             // 
+            this.bt_DoDay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.bt_DoDay.FormattingEnabled = true;
             this.bt_DoDay.Items.AddRange(new object[] {
             "Small",
@@ -184,7 +187,7 @@
             this.bt_DoDay.Name = "bt_DoDay";
             this.bt_DoDay.Size = new System.Drawing.Size(87, 21);
             this.bt_DoDay.TabIndex = 13;
-            this.bt_DoDay.Text = "Độ dài";
+            this.bt_DoDay.SelectedIndex = 0;
             this.bt_DoDay.SelectedIndexChanged += new System.EventHandler(this.bt_DoDay_SelectedIndexChanged);
             // 
             // btMauVien
@@ -203,7 +206,7 @@
             // 
             // Keo_Gian
             // 
-            this.Keo_Gian.Location = new System.Drawing.Point(174, 41);
+            this.Keo_Gian.Location = new System.Drawing.Point(275, 40);
             this.Keo_Gian.Name = "Keo_Gian";
             this.Keo_Gian.Size = new System.Drawing.Size(75, 23);
             this.Keo_Gian.TabIndex = 15;
@@ -211,11 +214,33 @@
             this.Keo_Gian.UseVisualStyleBackColor = true;
             this.Keo_Gian.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Keo_Gian_MouseDown);
             // 
+            // bt_select
+            // 
+            this.bt_select.Location = new System.Drawing.Point(12, 41);
+            this.bt_select.Name = "bt_select";
+            this.bt_select.Size = new System.Drawing.Size(75, 23);
+            this.bt_select.TabIndex = 16;
+            this.bt_select.Text = "Select";
+            this.bt_select.UseVisualStyleBackColor = true;
+            this.bt_select.Click += new System.EventHandler(this.bt_select_Click);
+            // 
+            // bt_scanline
+            // 
+            this.bt_scanline.Location = new System.Drawing.Point(174, 41);
+            this.bt_scanline.Name = "bt_scanline";
+            this.bt_scanline.Size = new System.Drawing.Size(95, 23);
+            this.bt_scanline.TabIndex = 17;
+            this.bt_scanline.Text = "Scanline Fill";
+            this.bt_scanline.UseVisualStyleBackColor = true;
+            this.bt_scanline.Click += new System.EventHandler(this.bt_scanline_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1139, 542);
+            this.Controls.Add(this.bt_scanline);
+            this.Controls.Add(this.bt_select);
             this.Controls.Add(this.Keo_Gian);
             this.Controls.Add(this.btMauVien);
             this.Controls.Add(this.bt_DoDay);
@@ -232,6 +257,7 @@
             this.Controls.Add(this.btCircle);
             this.Controls.Add(this.btLine);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Click += new System.EventHandler(this.bt_luc_giac_deu_Click);
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).EndInit();
@@ -259,6 +285,8 @@
         private System.Windows.Forms.Button btMauVien;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button Keo_Gian;
+        private System.Windows.Forms.Button bt_select;
+        private System.Windows.Forms.Button bt_scanline;
     }
 }
 

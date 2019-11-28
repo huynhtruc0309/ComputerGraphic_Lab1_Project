@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections;
+
 namespace Lab01
 {
     public partial class Form1 : Form
@@ -166,7 +168,7 @@ namespace Lab01
             }
             public bool ismiddle(Object inobject, Point End)
             {
-                List<Point> p = inobject.Get();
+                List<Point> p = inobject.GetVertices();
                 if (p.Count < 2) return false;
                 if (p.Count == 2)
                 {
@@ -187,11 +189,11 @@ namespace Lab01
                     }
                     return flag;
                 }
-                return false;
+                //return false;
             }
             virtual public void CoGian(Object inobject, Point pstart, Point pend)//toa do cua glcontrol
             {
-                List<Point> p = inobject.Get();
+                List<Point> p = inobject.GetVertices();
                 Point diemchon = pend;
                 bool middle = ismiddle(inobject, pend);
                 float scaleratio = (float)((pend.X + pend.Y) * 1.0 / (pstart.X + pstart.Y));
@@ -220,8 +222,6 @@ namespace Lab01
                     temp.Add(t);
                 }
                 inobject.setP(temp, scaleratio);
-
-
             }
         }
 
@@ -243,13 +243,52 @@ namespace Lab01
             public List<Point> p = new List<Point>();
             public Color lineColor, bgColor; //Màu viền và màu nền
             public int lineSize; //Kích cỡ nét
-
+            /// <summary>
+            /// xMin -> yMin -> xMax -> yMax
+            /// </summary>
+            public List<int> pMinMax = new List<int>(4);
             //Constructor
             public Object()
             {
                 lineColor = Color.White;
                 bgColor = Color.Black;
                 lineSize = 5;
+            }
+
+            /// <summary>
+            /// Hàm lấy giá trị xMin, yMin, xMax, yMax
+            /// </summary>
+            private void getpMinMax()
+            {
+                pMinMax.Add(9999);
+                pMinMax.Add(9999);
+                pMinMax.Add(-1);
+                pMinMax.Add(-1);
+                foreach (var pt in p)
+                {
+                    if (pt.X > pMinMax[2]) pMinMax[2] = pt.X;
+                    if (pt.Y > pMinMax[3]) pMinMax[3] = pt.Y;
+                    if (pt.X < pMinMax[0]) pMinMax[0] = pt.X;
+                    if (pt.Y < pMinMax[1]) pMinMax[1] = pt.Y;
+                }
+            }
+
+            /// <summary>
+            /// Hàm kiểm tra điểm p có nằm trong hình không
+            /// </summary>
+            /// <param name="p">Tọa độ điểm click chuột</param>
+            /// <returns></returns>
+            public bool IsInside(Point p)
+            {
+                getpMinMax();
+                if ((pMinMax[0] <= p.X && p.X <= pMinMax[2]) && (pMinMax[1] <= p.Y && p.Y <= pMinMax[3]))
+                    return true;
+                return false;
+            }
+
+            public int Round(double x)
+            {
+                return (int)(x + 0.5);
             }
 
             //Cài đặt
@@ -259,11 +298,10 @@ namespace Lab01
                 pEnd = end;
             }
 
-
             //Màu viền
-            public void setLineColor(Color line)
+            public void setLineColor(Color color)
             {
-                lineColor = line;
+                lineColor = color;
             }
 
             public virtual void updateP() { }
@@ -283,6 +321,11 @@ namespace Lab01
                     case 2: lineSize = 10; break; //Medium
                     case 3: lineSize = 15; break; //Big
                 }
+            }
+
+            public int getLineSize()
+            {
+                return lineSize;
             }
 
             //Thiết lập toạ độ khi di chuyển chuột
@@ -311,8 +354,12 @@ namespace Lab01
             //Hàm di chuyển ảnh
             public virtual void move(int dX, int dY) { }
 
+            public virtual List<Point> GetVerticesForScanline()
+            {
+                return this.p;
+            }
             //Lấy đỉnh
-            public virtual List<Point> Get()
+            public virtual List<Point> GetVertices()
             {
                 return p;
             }
@@ -334,7 +381,6 @@ namespace Lab01
                 B = end;
                 p.Add(A);
                 p.Add(B);
-
             }
 
             public override void setP(List<Point> p, float ratio)
@@ -666,6 +712,35 @@ namespace Lab01
                 center.X += dX;
                 center.Y += dY;
             }
+
+            public override List<Point> GetVerticesForScanline()
+            {
+                List<Point> pVertices = new List<Point>();
+                int totalSegments = 60;
+                Point p1 = new Point(p[0].X, p[0].Y);
+                Point p2 = new Point(p[4].X, p[4].Y);
+                p1 = new Point(p1.X, p1.Y);
+                p2 = new Point(p2.X, p2.Y);
+                double r = Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
+                r = r / (2 * Math.Sqrt(2));
+                int xc = Round((p1.X + p2.X) / 2);
+                int yc = Round((p1.Y + p2.Y) / 2);
+                int x = 0;
+                int y = Round(r);
+                Point pV; // Cac dinh cua obj vao
+
+                for (int alpha = 0; alpha < 360; alpha += 360 / totalSegments)
+                {
+                    // Đổi về radian
+                    double alpha_rad = alpha * Math.PI / 180;
+                    // Tinh x, y
+                    pV = new Point(Round(xc + x * Math.Cos(alpha_rad) - y * Math.Sin(alpha_rad))
+                        , Round(yc + x * Math.Sin(alpha_rad) + y * Math.Cos(alpha_rad)));
+                    // Them cac dinh cua obj vao
+                    pVertices.Add(pV);
+                }
+                return pVertices;
+            }
         }
 
         // Class hình ellipse
@@ -810,6 +885,43 @@ namespace Lab01
             {
                 center.X += dX;
                 center.Y += dY;
+            }
+
+            public override List<Point> GetVerticesForScanline()
+            {
+                List<Point> pVertices = new List<Point>();
+                int totalSegments = 60;
+                Point p1 = new Point(p[0].X, p[0].Y);
+                Point p2 = new Point(p[4].X, p[4].Y);
+                p1 = new Point(p1.X, p1.Y);
+                p2 = new Point(p2.X, p2.Y);
+                int xc = Round((double)(p1.X + p2.X) / 2);
+                int yc = Round((double)(p1.Y + p2.Y) / 2);
+
+                // Goi A(xa, ya) la giao diem cua 0x va ellipse
+                int xa = p2.X;
+                int ya = Round((double)(p1.Y + p2.Y) / 2);
+
+                // Goi B(xb, yb) la giao diem cua 0y va ellipse
+                int xb = Round((double)(p1.X + p2.X) / 2);
+                int yb = p1.Y;
+
+                // Tinh rx va ry
+                double rx = Math.Sqrt(Math.Pow(xa - xc, 2) + Math.Pow(ya - yc, 2));
+                double ry = Math.Sqrt(Math.Pow(xb - xc, 2) + Math.Pow(yb - yc, 2));
+
+                Point pV; //Biến gán tạm mỗi đỉnh của Ellipse
+                for (int alpha = 0; alpha < 360; alpha += 360 / totalSegments)
+                {
+                    //Tính theo radian
+                    double alpha_rad = alpha * Math.PI / 180;
+                    // Tinh x, y
+                    pV = new Point(Round(xc + rx * Math.Cos(alpha_rad))
+                        , Round(yc + ry * Math.Sin(alpha_rad)));
+                    //Thêm vào danh sách các đỉnh của hình
+                    pVertices.Add(pV);
+                }
+                return pVertices;
             }
         }
 
@@ -1048,6 +1160,12 @@ namespace Lab01
             shShape = 6;
         }
 
+        //Nút tô màu hình
+        private void bt_fill_MouseClick(object sender, MouseEventArgs e)
+        {
+            shShape = 7;
+        }
+
         //Nút chọn màu nền
         private void btMauNen_Click(object sender, EventArgs e)
         {
@@ -1064,12 +1182,6 @@ namespace Lab01
             {
                 userLineColor = colorDialog1.Color;
             }
-        }
-
-        //Nút tô màu hình
-        private void bt_fill_MouseClick(object sender, MouseEventArgs e)
-        {
-            shShape = 7;
         }
 
         //Nút chọn kích thước nét
@@ -1098,8 +1210,6 @@ namespace Lab01
         //Hàm vẽ chính trong chương trình
         Color GetColor(int x, int y, OpenGL gl)
         {
-
-
             Color cl = Color.FromArgb(0, (int)bitmap[y][x][0], (int)bitmap[y][x][1], (int)bitmap[y][x][2]);
             return cl;
         }
@@ -1206,6 +1316,385 @@ namespace Lab01
             gl.DrawPixels(gl.RenderContextProvider.Width, gl.RenderContextProvider.Height, OpenGL.GL_UNSIGNED_BYTE, pixel);
         }
 
+        #region THUAT TOAN SCANLINE
+        /// <summary>
+        /// Cấu trúc dữ liệu Active Edge List
+        /// </summary>
+        class AEL
+        {
+            /// <summary>
+            /// Tọa độ y đỉnh cao của cạnh (đã được tinh chế)
+            /// </summary>
+            int yUpper;
+            /// <summary>
+            /// Tọa độ x của giao điểm đầu tiên của cạnh và dòng quét
+            /// </summary>
+            float xIntersect;
+            /// <summary>
+            /// Nghịch đảo hệ số góc (tính theo dữ liệu gốc)
+            /// </summary>
+            float reciSlope; //Reciprocal Slope
+            public int GetYUpper()
+            {
+                return this.yUpper;
+            }
+            public float GetXInt()
+            {
+                return this.xIntersect;
+            }
+            public float GetReciSlope()
+            {
+                return this.reciSlope;
+            }
+            /// <summary>
+            /// Hàm cập nhật lại giá trị của xIntersect sau khi thực hiện một dòng quét
+            /// </summary>
+            public void UpdateXInt()
+            {
+                this.xIntersect += this.reciSlope;
+            }
+            /// <summary>
+            /// Hàm khởi tạo cấu trúc AEL
+            /// </summary>
+            /// <param name="y_upper">Tọa độ y đỉnh cao</param>
+            /// <param name="x_int">Tọa độ x giao điểm đầu tiên</param>
+            /// <param name="reci_slope">Nghịch đảo độ dốc</param>
+            public AEL(int y_upper, float x_int, float reci_slope)
+            {
+                this.yUpper = y_upper;
+                this.xIntersect = x_int;
+                this.reciSlope = reci_slope;
+            }
+        }
+
+        /// <summary>
+        /// Class Edge Table phục vụ cho thuật toán tô màu Scanline
+        /// </summary>
+        class ET
+        {
+            Hashtable hTable = new Hashtable();
+            /// <summary>
+            /// Key nhỏ nhất mà có chứa ít nhất một cạnh trong linked list các cạnh
+            /// </summary>
+            int minKey = 99999; //Tạo số trước để tý so sánh
+            /// <summary>
+            /// Key lớn nhất mà có chứa ít nhất một cạnh trong linked list các cạnh
+            /// </summary>
+            int maxKey = -2; //Tạo số trước để tý so sánh
+            /// <summary>
+            /// Hàm kiểm tra giao điểm của 2 cạnh có phải cực trị
+            /// </summary>
+            /// <param name="p1">Điểm riêng cạnh 1</param>
+            /// <param name="p2">Điểm chung 2 cạnh</param>
+            /// <param name="p3">Điểm riêng cạnh 2</param>
+            /// <returns></returns>
+            private bool IsExtreme(Point p1, Point p2, Point p3)
+            {
+                if ((p2.Y >= p1.Y && p2.Y >= p3.Y) || (p2.Y <= p1.Y && p2.Y <= p3.Y))
+                    return true;
+                return false;
+            }
+            /// <summary>
+            /// Hàm tính hệ số góc của một cạnh
+            /// </summary>
+            /// <param name="p1">Điểm đầu</param>
+            /// <param name="p2">Điểm cuối</param>
+            /// <returns></returns>
+            private float CalcSlope(Point p1, Point p2)
+            {
+                if (p2.X == p1.X)
+                {
+                    return 0;
+                }
+                return ((float)(p2.Y - p1.Y) / (p2.X - p1.X));
+            }
+            /// <summary>
+            /// Hàm lấy bảng băm trỏ đến các linkedlist chứa các cạnh
+            /// </summary>
+            /// <returns>Bảng băm (cũng chính là Edge Table)</returns>
+            public Hashtable GetET()
+            {
+                return this.hTable;
+            }
+            /// <summary>
+            /// Hàm lấy minKey
+            /// </summary>
+            /// <returns>minKey</returns>
+            public int GetMinKey()
+            {
+                return this.minKey;
+            }
+            /// <summary>
+            /// Hàm lấy maxKey
+            /// </summary>
+            /// <returns>maxKey</returns>
+            public int GetMaxKey()
+            {
+                return this.maxKey;
+            }
+            /// <summary>
+            /// Hàm duyệt qua các cạnh để lưu thông số (yUpper, xInt, reciSlope) vào bảng băm
+            /// </summary>
+            /// <param name="pList">Danh sách các đỉnh của hình</param>
+            public void SetET(List<Point> pList)
+            {
+                for (int i = 0; i < pList.Count; i++)
+                {
+                    // Khởi tạo điểm trước, điểm hiện tại và điểm tiếp theo
+                    Point prevPoint, curPoint, nextPoint;
+                    //Set điểm trước
+                    if (i == 0)
+                    {
+                        prevPoint = pList[pList.Count - 1];
+                    }
+                    else
+                    {
+                        prevPoint = pList[i - 1];
+                    }
+                    //Set điểm hiện tại
+                    curPoint = pList[i];
+                    //Set điểm tiếp theo
+                    if (i == pList.Count - 1)
+                    {
+                        nextPoint = pList[0];
+                    }
+                    else
+                    {
+                        nextPoint = pList[i + 1];
+                    }
+
+                    //Set reciSlope để lưu vào ET
+                    float slope = this.CalcSlope(curPoint, nextPoint);
+                    float reci_slope;
+                    if (slope == 0)
+                    {
+                        // Neu canh vuong goc Oy thi chay den vong lap tiep theo
+                        if (curPoint.X != nextPoint.X)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            reci_slope = 0;
+                        }
+                    }
+                    else
+                    {
+                        reci_slope = 1 / slope;
+                    }
+
+                    //Set yUpper để lưu vào ET
+                    int y_upper;
+
+                    if (nextPoint.Y > curPoint.Y)
+                    {
+                        y_upper = nextPoint.Y;
+                        Point nextNextPoint; // Điểm tiếp theo của điểm tiếp theo
+                        if (i >= pList.Count - 2) // (i+2) la index cua diem lien sau nextPoint, neu no vuot ra khoi do dai danh sach
+                        {
+                            nextNextPoint = pList[i + 2 - pList.Count];// thi coi nhu no se tro ve dau danh sach
+                        }
+                        else
+                        {
+                            nextNextPoint = pList[i + 2];
+                        }
+                        //Làm ngắn cạnh không phải cực trị
+                        if (this.IsExtreme(curPoint, nextPoint, nextNextPoint) == false)
+                            y_upper--;
+                    }
+                    else //nextPoint.Y <= curPoint.Y
+                    {
+                        y_upper = curPoint.Y;
+                        if (this.IsExtreme(prevPoint, curPoint, nextPoint) == false)// Kiem tra co phai la cuc tri
+                            y_upper--;
+                    }
+                    if (y_upper - 1 > this.maxKey) // Neu thoa dieu kien nay thi cap nhat lai maxKey
+                        maxKey = y_upper - 1;
+
+                    //Set xIntersect để lưu vào ET
+                    float x_int;
+                    if (nextPoint.Y < curPoint.Y)// xet dinh dau va dinh cuoi cua canh, diem nao co y be hon thi x cua no se duoc chon lam x_intersect
+                    {
+                        x_int = nextPoint.X;
+                    }
+                    else //nextPoint.Y >= curPoint.Y
+                    {
+                        x_int = curPoint.X;
+                    }
+
+                    // Thực hiện lưu vào ET
+                    AEL temp = new AEL(y_upper, x_int, reci_slope);
+                    int y_lower;
+                    if (nextPoint.Y < curPoint.Y)
+                    {
+                        y_lower = nextPoint.Y;
+                    }
+                    else
+                    {
+                        y_lower = curPoint.Y;
+                    }
+                    if (y_lower < this.minKey)
+                    {
+                        minKey = y_lower;
+                    }
+
+                    if (hTable.ContainsKey(y_lower))
+                    {
+                        ((LinkedList<AEL>)hTable[y_lower]).AddLast(temp);
+                    }
+                    else // Nếu chưa
+                    {
+                        LinkedList<AEL> eList = new LinkedList<AEL>();
+                        eList.AddLast(temp);
+                        hTable.Add(y_lower, eList);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Hàm thuật toán tô màu scanline color fill
+        /// </summary>
+        /// <param name="gl">OPENGL Controller</param>
+        /// <param name="color">Màu tô đã chọn</param>
+        /// <param name="pVertices">Danh sách các đỉnh của hình</param>
+        /// <param name="oColor">Màu viền của hình</param>
+        private void ScanLineColorFill(OpenGL gl, Color color, List<Point> pVertices, Color oColor)
+        {
+            //Tạo bảng băm lưu danh sách cấu trúc AEL
+            ET edgeTable = new ET();
+            edgeTable.SetET(pVertices);
+            //Tạo hashtable temp để lưu bảng băm từ Edge Table ở trên
+            Hashtable temp = new Hashtable();
+            temp = edgeTable.GetET();
+            //Tạo con trỏ kiểu cấu trúc AEL để trỏ vào danh sách các cạnh mà dòng quét đi qua
+            LinkedList<AEL> begList = new LinkedList<AEL>();
+            //Lần lướt gán biến start và biến end bằng MinKey và MaxKey của bảng băm
+            int start = edgeTable.GetMinKey(), end = edgeTable.GetMaxKey();
+            //Tạo vùng tô mới
+            vungto vt = new vungto
+            {
+                cl = color
+            };
+            //Duyệt các dòng quét từ MIN_Y đến MAX_Y
+            for (int y = start; y <= end; y++)
+            {
+                // Bước 1: Thêm cạnh ở vị trí y trong edge table vào danh sách begList (đóng vai trò là con trỏ)
+                if (temp.ContainsKey(y))
+                {
+                    foreach (var e in (LinkedList<AEL>)temp[y])
+                    {
+                        begList.AddLast(e);
+                    }
+                }
+                // Bước 2: Sắp xếp các cạnh theo thứ tự xIntersect tăng dần
+                var sortedBegList = begList.OrderBy(AEL => AEL.GetXInt());
+
+                // Bước 3: Lắp đầy các pixels giữa các cặp giao điểm lẻ-chẵn
+                LinkedListNode<AEL> tempNode = begList.First;
+                while (tempNode != null) //Duyệt đến cuối danh sách thì dừng
+                {
+                    var nextNode = tempNode.Next;
+                    var nextNextNode = nextNode.Next;
+                    Point p1 = new Point((int)tempNode.Value.GetXInt(), y);
+                    Point p2 = new Point((int)nextNode.Value.GetXInt(), y);
+                    int p_start, p_end;
+                    //So sánh tọa độ X của 2 điểm liền kề
+                    if (p1.X <= p2.X)
+                    {
+                        p_start = p1.X;
+                        p_end = p2.X;
+                    }
+                    else //p1.X > p2.X
+                    {
+                        p_start = p2.X;
+                        p_end = p1.X;
+                    }
+                    
+                    for (int i = p_start; i <= p_end; i++)
+                    {
+                        //Kiểm tra nếu đụng biên thì chuyển sang không thêm vào vungto
+                        Color pColor = GetColor(i, gl.RenderContextProvider.Height - y, gl);
+                        if (pColor.R == oColor.R && pColor.G == oColor.G && pColor.B == oColor.B)
+                        {
+                            //do nothing
+                        }
+                        else
+                        {
+                            vt.p.Add(new Point(i, gl.RenderContextProvider.Height - y));
+                            bitmap[gl.RenderContextProvider.Height - y][i][0] = color.R;
+                            bitmap[gl.RenderContextProvider.Height - y][i][1] = color.G;
+                            bitmap[gl.RenderContextProvider.Height - y][i][2] = color.B;
+                            bitmap[gl.RenderContextProvider.Height - y][i][3] = 0;
+                        }
+                    }
+                    tempNode = nextNextNode;// Bỏ qua cặp chẵn-lẻ
+                }
+
+                // Bước 4: Xóa các cạnh có yUppper = y
+                var node = begList.First; // first element of begList
+                while (node != null)
+                {
+                    var nextNode = node.Next;
+                    if (node.Value.GetYUpper() == y)
+                        begList.Remove(node);// remove nodes having yUpper = y
+                    node = nextNode;
+                }
+
+                // Bước 5: Cập nhật xIntersect
+                foreach (var e in begList)
+                {
+                    e.UpdateXInt();
+                }
+            }
+            tatcavungto.Add(vt);
+        }
+
+        private void tomau2(Point p, Color color, Object[] arr, OpenGL gl, int outline)
+        {
+            List<Point> pList = new List<Point>();
+            Color oColor = Color.White;
+            for (int i = 0; i < numObj; i++)
+            {
+                if (arr[i].IsInside(p))
+                {
+                    pList = arr[i].GetVerticesForScanline();
+                    oColor = arr[i].lineColor;
+                    break;
+                }
+            }
+            if (pList != null)
+            {
+                gl.ReadPixels(0, 0, gl.RenderContextProvider.Width
+                    , gl.RenderContextProvider.Height, OpenGL.GL_RGBA, OpenGL.GL_UNSIGNED_BYTE, pixel);
+                int pixelindex = 0;
+                for (int i = 0; i < bitmap.Count; i++)
+                {
+                    for (int j = 0; j < bitmap[i].Count; j++)
+                    {
+                        for (int z = 0; z < 4; z++)
+                        {
+                            bitmap[i][j][z] = pixel[pixelindex++];
+                        }
+                    }
+                }
+                ScanLineColorFill(gl, color, pList, oColor);
+                pixelindex = 0;
+                for (int i = 0; i < bitmap.Count; i++)
+                {
+                    for (int j = 0; j < bitmap[i].Count; j++)
+                    {
+                        for (int z = 0; z < 4; z++)
+                        {
+                            pixel[pixelindex++] = (byte)bitmap[i][j][z];
+                        }
+                    }
+                }
+                gl.DrawPixels(gl.RenderContextProvider.Width, gl.RenderContextProvider.Height, OpenGL.GL_UNSIGNED_BYTE, pixel);
+            }
+        }
+        #endregion
+
         private void openGLControl_OpenGLDraw(object sender, SharpGL.RenderEventArgs args)
         {
 
@@ -1244,7 +1733,7 @@ namespace Lab01
             for (int i = 0; i <= numObj; i++)
             {
                 arrObj[i].drawObject(gl);
-                arrObj[i].colorObject(gl);
+                //arrObj[i].colorObject(gl);
             }
 
             if (shShape == 7)
@@ -1255,19 +1744,30 @@ namespace Lab01
                     gl.PointSize(1);
                     gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
                     tomau(toadomau, userBgColor, arrObj, gl);
+                    //tomau2(toadomau, userBgColor, arrObj, gl);
+                }
+                toadomau.X = -1;
+                toadomau.Y = -1;
+            }
+
+            if (shShape == 10)
+            {
+                if (toadomau.X != -1 && toadomau.Y != -1)
+                {
+                    tomau2(toadomau, userBgColor, arrObj, gl, userLineSize);
                 }
                 toadomau.X = -1;
                 toadomau.Y = -1;
             }
             gl.PointSize(1);
             gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
-            for (int i = 0; i < tatcavungto.Count; i++)
+            foreach (var vt in tatcavungto)
             {
-                gl.Color(tatcavungto[i].cl.R / 255.0, tatcavungto[i].cl.G / 255.0, tatcavungto[i].cl.B / 255.0, 0);
+                gl.Color(vt.cl.R / 255.0, vt.cl.G / 255.0, vt.cl.B / 255.0, 0);
                 gl.Begin(OpenGL.GL_POINTS);
-                for (int j = 0; j < tatcavungto[i].p.Count; j++)
+                foreach (var p in vt.p)
                 {
-                    gl.Vertex(tatcavungto[i].p[j].X, tatcavungto[i].p[j].Y);
+                    gl.Vertex(p.X, p.Y);
                 }
                 gl.End();
                 gl.Flush();
@@ -1283,7 +1783,7 @@ namespace Lab01
                     for (int i = 0; i < numObj; i++)
                     {
 
-                        List<Point> p = arrObj[i].Get();
+                        List<Point> p = arrObj[i].GetVertices();
                         for (int j = 0; j < p.Count; j++)
                         {
 
@@ -1303,7 +1803,7 @@ namespace Lab01
                     if (flag == 1)
                     {
                         AffineTransform t = new AffineTransform();
-                        t.CoGian(arrObj[index], arrObj[index].Get()[indexj], pEnd);
+                        t.CoGian(arrObj[index], arrObj[index].GetVertices()[indexj], pEnd);
                     }
                 }
             }
@@ -1322,7 +1822,7 @@ namespace Lab01
             height = gl.RenderContextProvider.Height;
             width = gl.RenderContextProvider.Width;
             pixel = new byte[4 * (gl.RenderContextProvider.Width) * (gl.RenderContextProvider.Height)];
-            //Xóa màng hình, trả chế độ và load view
+            //Xóa màn hình, trả chế độ và load view
             gl.ClearColor(0, 0, 0, 0);
             gl.MatrixMode(OpenGL.GL_PROJECTION);
             gl.LoadIdentity();
@@ -1390,7 +1890,15 @@ namespace Lab01
 
         }
 
+        private void bt_select_Click(object sender, EventArgs e)
+        {
+            shShape = 9;
+        }
 
+        private void bt_scanline_Click(object sender, EventArgs e)
+        {
+            shShape = 10;
+        }
 
         //Khi di chuyển chuột trên màn hình
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)
@@ -1429,19 +1937,20 @@ namespace Lab01
         //Khi nhấp chuột vào màn hình
         private void openGLControl_MouseClick(object sender, MouseEventArgs e)
         {
-            if (shShape == 7)
+            if (shShape == 7 || shShape == 10)
             {
                 toadomau = pStart;
             }
-            for (int i = numObj - 1; i >= 0; i--)
-            {//Kiểm tra điểm được chọn có nằm trong hình đã vẽ không
-                if (e.Location.X <= arrObj[i].pEnd.X && e.Location.X >= arrObj[i].pStart.X && e.Location.Y <= arrObj[i].pEnd.Y && e.Location.Y >= arrObj[i].pStart.Y)
-                {
-                    idViewPoint = i;
-                    break;
+            if (shShape == 9)
+                for (int i = numObj - 1; i >= 0; i--)
+                {//Kiểm tra điểm được chọn có nằm trong hình đã vẽ không
+                    if (arrObj[i].IsInside(e.Location))
+                    {
+                        idViewPoint = i;
+                        break;
+                    }
+                    if (i == 0) idViewPoint = -1; //Nếu không thì coi như không hiện viewPoint lên
                 }
-                if (i == 0) idViewPoint = -1; //Nếu không thì coi như không hiện viewPoint lên
-            }
         }
     }
 }

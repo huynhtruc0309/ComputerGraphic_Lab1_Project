@@ -74,8 +74,6 @@ namespace Lab01
                 }
                 return c;
             }
-
-
         }
 
         class AffineTransform
@@ -107,7 +105,6 @@ namespace Lab01
                 temp.set(0, 2, dx);
                 temp.set(1, 2, dy);
                 _matrixTransform = _matrixTransform.multiply(temp, _matrixTransform);
-
             }
             public void Rotate(float degree)
             {
@@ -129,7 +126,6 @@ namespace Lab01
             }
             public void Scale(float sx, float sy)
             {
-                //degree = (float)(degree * Math.PI / 180);
                 Mat temp = new Mat(3, 3);
                 for (int i = 0; i < 3; i++)
                 {
@@ -137,8 +133,6 @@ namespace Lab01
                     {
                         temp.set(i, j, 0);
                     }
-
-
                 }
                 temp.set(0, 0, sx);
                 temp.set(1, 1, sy);
@@ -168,7 +162,7 @@ namespace Lab01
             }
             public bool ismiddle(Object inobject, Point End)
             {
-                List<Point> p = inobject.GetVertices();
+                List<Point> p = inobject.Get();
                 if (p.Count < 2) return false;
                 if (p.Count == 2)
                 {
@@ -193,7 +187,7 @@ namespace Lab01
             }
             virtual public void CoGian(Object inobject, Point pstart, Point pend)//toa do cua glcontrol
             {
-                List<Point> p = inobject.GetVertices();
+                List<Point> p = inobject.Get();
                 Point diemchon = pend;
                 bool middle = ismiddle(inobject, pend);
                 float scaleratio = (float)((pend.X + pend.Y) * 1.0 / (pstart.X + pstart.Y));
@@ -240,21 +234,29 @@ namespace Lab01
         public abstract class Object
         {
             public Point pStart, pEnd;
-            public List<Point> p = new List<Point>();
-            public Color lineColor, bgColor; //Màu viền và màu nền
-            public int lineSize; //Kích cỡ nét
+            protected List<Point> p = new List<Point>();
+            protected List<Point> pV = new List<Point>();
+            /// <summary>
+            /// Màu viền của hình
+            /// </summary>
+            public Color lineColor;
+            /// <summary>
+            /// Độ dày viền của hình
+            /// </summary>
+            public int lineSize;
             /// <summary>
             /// xMin -> yMin -> xMax -> yMax
             /// </summary>
             public List<int> pMinMax = new List<int>(4);
-            //Constructor
+
+            /// <summary>
+            /// Hàm khởi tạo Object
+            /// </summary>
             public Object()
             {
                 lineColor = Color.White;
-                bgColor = Color.Black;
                 lineSize = 5;
             }
-
             /// <summary>
             /// Hàm lấy giá trị xMin, yMin, xMax, yMax
             /// </summary>
@@ -272,7 +274,6 @@ namespace Lab01
                     if (pt.Y < pMinMax[1]) pMinMax[1] = pt.Y;
                 }
             }
-
             /// <summary>
             /// Hàm kiểm tra điểm p có nằm trong hình không
             /// </summary>
@@ -285,34 +286,37 @@ namespace Lab01
                     return true;
                 return false;
             }
-
+            /// <summary>
+            /// Hàm làm tròn số thực
+            /// </summary>
+            /// <param name="x">Số thực cần làm tròn</param>
+            /// <returns>Số nguyên đã làm tròn</returns>
             public int Round(double x)
             {
                 return (int)(x + 0.5);
             }
-
-            //Cài đặt
+            /// <summary>
+            /// Hàm set điểm đầu và điểm cuối
+            /// </summary>
+            /// <param name="start">Tọa độ điểm đầu</param>
+            /// <param name="end">Tọa độ điểm cuối</param>
             public void set(Point start, Point end)
             {
                 pStart = start;
                 pEnd = end;
             }
-
-            //Màu viền
+            /// <summary>
+            /// Hàm set màu viền của hình
+            /// </summary>
+            /// <param name="color">Màu viền</param>
             public void setLineColor(Color color)
             {
                 lineColor = color;
             }
-
-            public virtual void updateP() { }
-
-            //Màu nền
-            public void setBGColor(Color bg)
-            {
-                bgColor = bg;
-            }
-
-            //Độ dày nét
+            /// <summary>
+            /// Hàm set độ dày viền của hình
+            /// </summary>
+            /// <param name="userChoice">Giá trị lựa chọn độ dày</param>
             public void setLineSize(int userChoice)
             {
                 switch (userChoice)
@@ -323,20 +327,41 @@ namespace Lab01
                 }
             }
 
-            public int getLineSize()
+            /// <summary>
+            /// Hàm thiết lập các đỉnh của hình
+            /// </summary>
+            /// <param name="start">Tọa độ điểm bắt đầu</param>
+            /// <param name="end">Tọa độ điểm kết thúc</param>
+            public virtual void SetPoint(Point start, Point end) { }
+            /// <summary>
+            /// Hàm ra lệnh OpenGL Controller vẽ hình
+            /// </summary>
+            /// <param name="gl">OpenGL Controller</param>
+            public virtual void DrawObject(OpenGL gl)
             {
-                return lineSize;
+                gl.Begin(OpenGL.GL_LINE_LOOP);
+                gl.Color(lineColor.R / 255.0, lineColor.G / 255.0, lineColor.B / 255.0, 0);
+
+                foreach (var p in this.pV)
+                {
+                    gl.Vertex(p.X, gl.RenderContextProvider.Height - p.Y);
+                }
+
+                gl.End();
+                gl.LineWidth(lineSize);
             }
-
-            //Thiết lập toạ độ khi di chuyển chuột
-            public virtual void setPoint(Point start, Point end) { }
-
-            //Hàm vẽ hình, tô màu và hiển thị điểm điều khiển
-            public virtual void drawObject(OpenGL gl) { }
-            public virtual void colorObject(OpenGL gl)
+            /// <summary>
+            /// Hàm cập nhật control points sau khi thực hiện thay đổi hình
+            /// </summary>
+            public virtual void UpdateCtrlPoints()
             {
+                this.p = this.pV;
             }
-            public virtual void viewControlPoint(OpenGL gl)
+            /// <summary>
+            /// Hàm ra lệnh OpenGL Controller hiện điểm điều khiển
+            /// </summary>
+            /// <param name="gl">Open GL Controller</param>
+            public virtual void DrawControlPoints(OpenGL gl)
             {
                 gl.PointSize(lineSize + 3);
                 gl.Begin(OpenGL.GL_POINTS);
@@ -347,25 +372,53 @@ namespace Lab01
                 }
                 gl.End();
             }
-
-            //Hàm xoay ảnh
+            //Hàm xoay ảnh (incompleted)
             public virtual void affine(float degree) { }
-
-            //Hàm di chuyển ảnh
-            public virtual void move(int dX, int dY) { }
-
+            /// <summary>
+            /// Hàm di chuyển hình (incompleted)
+            /// </summary>
+            /// <param name="dX">Độ dời theo X</param>
+            /// <param name="dY">Độ dời theo Y</param>
+            public virtual void move(int dX, int dY)
+            {
+                List<Point> temp = new List<Point>();
+                foreach (var p in pV)
+                {
+                    temp.Add(new Point(p.X + dX, p.Y + dY));
+                }
+                pV = temp;
+            }
+            /// <summary>
+            /// Hàm lấy danh sách đỉnh phục vụ tô màu Scanline Color Fill (override ở Circle và Ellipse)
+            /// </summary>
+            /// <returns>Danh sách đỉnh của hình</returns>
             public virtual List<Point> GetVerticesForScanline()
+            {
+                return this.pV;
+            }
+            /// <summary>
+            /// Hàm lấy danh sách control points
+            /// </summary>
+            /// <returns>Danh sách control points</returns>
+            public virtual List<Point> Get()
             {
                 return this.p;
             }
-            //Lấy đỉnh
-            public virtual List<Point> GetVertices()
-            {
-                return p;
-            }
+            /// <summary>
+            /// Hàm cập nhật các đỉnh sau khi Scale (override ở Circle và Ellipse)
+            /// </summary>
+            /// <param name="p">Danh sách đỉnh mới</param>
+            /// <param name="ration">Tỉ lệ scale</param>
             public virtual void setP(List<Point> p, float ration)
             {
-
+                int deltaX = p[0].X - pV[0].X;
+                int deltaY = p[0].Y - pV[0].Y;
+                List<Point> temp = new List<Point>();
+                foreach (var pt in p)
+                {
+                    temp.Add(new Point(pt.X - deltaX, pt.Y - deltaY));
+                }
+                pV = temp;
             }
         }
 
@@ -373,44 +426,13 @@ namespace Lab01
         public class Line : Object
         {
             private Point A, B;
-
             public Line() { }
-            public override void setPoint(Point start, Point end)
+            public override void SetPoint(Point start, Point end)
             {
-                A = start;
-                B = end;
-                p.Add(A);
-                p.Add(B);
+                p.Add(start);
+                p.Add(end);
+                pV = p;
             }
-
-            public override void setP(List<Point> p, float ratio)
-            {
-                int deltaX = p[0].X - A.X;
-
-                int deltaY = p[0].Y - A.Y;
-                A.X = p[0].X - deltaX;
-                A.Y = (p[0].Y - deltaY);
-                B.X = p[1].X - deltaX;
-                B.Y = (p[1].Y - deltaY);
-            }
-            public override void updateP()
-            {
-                this.p[0] = A;
-                this.p[1] = B;
-            }
-            public override void drawObject(OpenGL gl)
-            {
-                gl.Begin(OpenGL.GL_LINES);
-                gl.Color(lineColor.R / 255.0, lineColor.G / 255.0, lineColor.B / 255.0, 0);
-
-                gl.Vertex(A.X, gl.RenderContextProvider.Height - A.Y);
-                gl.Vertex(B.X, gl.RenderContextProvider.Height - B.Y);
-
-                gl.End();
-                gl.LineWidth(lineSize);
-            }
-
-            //Hàm xoay ảnh
             public override void affine(float degree)
             {
                 Point Atmp = A;
@@ -428,15 +450,6 @@ namespace Lab01
                 B.X = (int)(Math.Cos(grad) * Btmp.X - Math.Sin(grad) * Btmp.Y) + ct.X;
                 B.Y = (int)(Math.Sin(grad) * Btmp.X + Math.Cos(grad) * Btmp.Y) + ct.Y;
             }
-
-            //Hàm tịnh tiến ảnh
-            public override void move(int dX, int dY)
-            {
-                A.X += dX;
-                A.Y += dY;
-                B.X += dX;
-                B.Y += dY;
-            }
         }
 
         // Class hình chữ nhật
@@ -444,52 +457,14 @@ namespace Lab01
         {
             private Point A, B, C, D;
             public Rectangle() { }
-            //Hàm đặt điểm
-            public override void setPoint(Point start, Point end)
+            public override void SetPoint(Point start, Point end)
             {
-                A = start;
-                C = end;
-                B = start;
-                B.X = end.X;
-                D = end;
-                D.X = start.X;
-                p.Add(A); p.Add(B); p.Add(C); p.Add(D);
+                p.Add(start);
+                p.Add(new Point(end.X, start.Y));
+                p.Add(end);
+                p.Add(new Point(start.X, end.Y));
+                pV = p;
             }
-            //Hàm vẽ hình
-            public override void drawObject(OpenGL gl)
-            {
-                gl.Begin(OpenGL.GL_LINE_LOOP);
-                gl.Color(lineColor.R / 255.0, lineColor.G / 255.0, lineColor.B / 255.0, 0);
-
-                gl.Vertex(A.X, gl.RenderContextProvider.Height - A.Y);
-                gl.Vertex(B.X, gl.RenderContextProvider.Height - B.Y);
-                gl.Vertex(C.X, gl.RenderContextProvider.Height - C.Y);
-                gl.Vertex(D.X, gl.RenderContextProvider.Height - D.Y);
-
-                gl.End();
-                gl.LineWidth(lineSize);
-            }
-            public override void setP(List<Point> p, float ratio)
-            {
-                int deltaX = p[0].X - A.X;
-                int deltaY = p[0].Y - A.Y;
-                A.X = p[0].X - deltaX;
-                A.Y = p[0].Y - deltaY;
-                B.X = p[1].X - deltaX;
-                B.Y = p[1].Y - deltaY;
-                C.X = p[2].X - deltaX;
-                C.Y = p[2].Y - deltaY;
-                D.X = p[3].X - deltaX;
-                D.Y = p[3].Y - deltaY;
-            }
-            public override void updateP()
-            {
-                this.p[0] = A;
-                this.p[1] = B;
-                this.p[2] = C;
-                this.p[3] = D;
-            }
-            //Hàm xoay ảnh
             public override void affine(float degree)
             {
                 Point Atmp = A, Btmp = B, Ctmp = C, Dtmp = D;
@@ -514,19 +489,6 @@ namespace Lab01
                 D.X = (int)(Math.Cos(grad) * Dtmp.X - Math.Sin(grad) * Dtmp.Y) + ct.X;
                 D.Y = (int)(Math.Sin(grad) * Dtmp.X + Math.Cos(grad) * Dtmp.Y) + ct.Y;
             }
-
-            //Hàm tịnh tiến ảnh
-            public override void move(int dX, int dY)
-            {
-                A.X += dX;
-                A.Y += dY;
-                B.X += dX;
-                B.Y += dY;
-                C.X += dX;
-                C.Y += dY;
-                D.X += dX;
-                D.Y += dY;
-            }
         }
 
         // Class hình tam giác
@@ -534,48 +496,34 @@ namespace Lab01
         {
             private Point A, B, C;
             public Triangle() { }
-            //Hàm đặt điểm
-            public override void setP(List<Point> p, float ration)
+            public override void SetPoint(Point start, Point end)
             {
-                int deltaX = p[0].X - A.X;
-                int deltaY = p[0].Y - A.Y;
-                A.X = p[0].X - deltaX;
-                A.Y = p[0].Y - deltaY;
-                B.X = p[1].X - deltaX;
-                B.Y = p[1].Y - deltaY;
-                C.X = p[2].X - deltaX;
-                C.Y = p[2].Y - deltaY;
-            }
-            public override void updateP()
-            {
-                this.p[0] = A;
-                this.p[1] = B;
-                this.p[2] = C;
-            }
-            public override void setPoint(Point start, Point end)
-            {
-                A.X = (start.X + end.X) / 2;
-                A.Y = start.Y;
-                B = end;
-                C.X = start.X;
-                C.Y = end.Y;
-                p.Add(A); p.Add(B); p.Add(C);
-            }
-            //Hàm vẽ hình
-            public override void drawObject(OpenGL gl)
-            {
-                gl.Begin(OpenGL.GL_LINE_LOOP);
-                gl.Color(lineColor.R / 255.0, lineColor.G / 255.0, lineColor.B / 255.0, 0);
+                // Ý tưởng: Các đỉnh của tam giác đều quay 1 góc alpha = 120 * PI / 180(radian)
+                //  B1: Gán pStart là tâm
+                //  B2: Quay pEnd theo công thức
+                //     x' = x*cos(alpha) - sin(alpha)*y
+                //     y' = x*sin(alpha) + y*cos(alpha)
 
-                gl.Vertex(A.X, gl.RenderContextProvider.Height - A.Y);
-                gl.Vertex(B.X, gl.RenderContextProvider.Height - B.Y);
-                gl.Vertex(C.X, gl.RenderContextProvider.Height - C.Y);
+                const int totalSegments = 3; //Số lượng segment
+                double r = Math.Sqrt(Math.Pow(start.X - end.X, 2) + Math.Pow(start.Y - end.Y, 2));
+                r = r / (2 * Math.Sqrt(2));
 
-                gl.End();
-                gl.LineWidth(lineSize);
+                int xc = (start.X + end.X) / 2;
+                int yc = (start.Y + end.Y) / 2;
+
+                // Giả sử xét từ tâm 0 (0,0)
+                int x = 0;
+                int y = Round(r);
+
+                for (int alpha = 0; alpha < 360; alpha += 360 / totalSegments)
+                {
+                    double alpha_rad = alpha * Math.PI / 180;
+                    Point temp = new Point(Round(xc + x * Math.Cos(alpha_rad) - y * Math.Sin(alpha_rad))
+                        , Round(yc + x * Math.Sin(alpha_rad) - y * Math.Cos(alpha_rad)));
+                    p.Add(temp);
+                }
+                pV = p;
             }
-
-            //Hàm xoay ảnh
             public override void affine(float degree)
             {
                 Point Atmp = A, Btmp = B, Ctmp = C;
@@ -596,17 +544,6 @@ namespace Lab01
                 C.X = (int)(Math.Cos(grad) * Ctmp.X - Math.Sin(grad) * Ctmp.Y) + ct.X;
                 C.Y = (int)(Math.Sin(grad) * Ctmp.X + Math.Cos(grad) * Ctmp.Y) + ct.Y;
             }
-
-            //Hàm tịnh tiến ảnh
-            public override void move(int dX, int dY)
-            {
-                A.X += dX;
-                A.Y += dY;
-                B.X += dX;
-                B.Y += dY;
-                C.X += dX;
-                C.Y += dY;
-            }
         }
 
         // Class hình tròn
@@ -621,7 +558,7 @@ namespace Lab01
                 R = (int)(oldR * ratio);
             }
             public Circle() { }
-            public override void updateP()
+            public override void UpdateCtrlPoints()
             {
 
                 Point C = new Point(center.X - R, center.Y + 2 * R);
@@ -646,7 +583,7 @@ namespace Lab01
                 // p.Add(A); p.Add(B); p.Add(C); p.Add(D); p.Add(E); p.Add(F); p.Add(G); p.Add(H); p.Add(K);
             }
             //Hàm đặt điểm
-            public override void setPoint(Point start, Point end)
+            public override void SetPoint(Point start, Point end)
             {
                 center.X = (start.X + end.X) / 2;
                 center.Y = (start.Y + start.Y) / 2;
@@ -680,7 +617,7 @@ namespace Lab01
                 gl.Vertex(center.X - x, gl.RenderContextProvider.Height - (center.Y + y + R));
             }
             //Hàm vẽ hình
-            public override void drawObject(OpenGL gl)
+            public override void DrawObject(OpenGL gl)
             {
                 gl.PointSize(lineSize);
                 gl.Begin(OpenGL.GL_POINTS);
@@ -757,7 +694,7 @@ namespace Lab01
                 Ry = (int)(oldRy * ratio);
 
             }
-            public override void updateP()
+            public override void UpdateCtrlPoints()
             {
 
                 Point C = new Point(center.X - Rx, center.Y + Ry);
@@ -783,7 +720,7 @@ namespace Lab01
                 // p.Add(A); p.Add(B); p.Add(C); p.Add(D); p.Add(E); p.Add(F); p.Add(G); p.Add(H); p.Add(K);
             }
             //Hàm đặt điểm
-            public override void setPoint(Point start, Point end)
+            public override void SetPoint(Point start, Point end)
             {
                 center.X = (start.X + end.X) / 2;
                 center.Y = (start.Y + end.Y) / 2;
@@ -813,7 +750,7 @@ namespace Lab01
                 gl.Vertex(center.X - x, gl.RenderContextProvider.Height - (center.Y - y));
             }
             //Hàm vẽ hình
-            public override void drawObject(OpenGL gl)
+            public override void DrawObject(OpenGL gl)
             {
                 gl.PointSize(lineSize);
                 gl.Begin(OpenGL.GL_POINTS);
@@ -898,15 +835,15 @@ namespace Lab01
                 int xc = Round((double)(p1.X + p2.X) / 2);
                 int yc = Round((double)(p1.Y + p2.Y) / 2);
 
-                // Goi A(xa, ya) la giao diem cua 0x va ellipse
+                // Gọi A(xa, ya) là giao điểm cùa Ox và Ellipse
                 int xa = p2.X;
                 int ya = Round((double)(p1.Y + p2.Y) / 2);
 
-                // Goi B(xb, yb) la giao diem cua 0y va ellipse
+                // Gọi B(xb, yb) là giao điểm cùa Oy và Ellipse
                 int xb = Round((double)(p1.X + p2.X) / 2);
                 int yb = p1.Y;
 
-                // Tinh rx va ry
+                // Tính rx và ry
                 double rx = Math.Sqrt(Math.Pow(xa - xc, 2) + Math.Pow(ya - yc, 2));
                 double ry = Math.Sqrt(Math.Pow(xb - xc, 2) + Math.Pow(yb - yc, 2));
 
@@ -928,158 +865,64 @@ namespace Lab01
         // Class hình ngũ giác đều
         public class Pentagon : Object
         {
-            private int R;
-            private int oldR;
-            private Point center;
-            public override void setP(List<Point> p, float ratio)
-            {
-                R = (int)(oldR * ratio);
-            }
             public Pentagon() { }
-            //Hàm đặt điểm
-            public override void updateP()
+            public override void SetPoint(Point start, Point end)
             {
-                this.p.Clear();
-                float grad = (float)((72 * 3.14) / 180);
-                for (int i = 1; i < 5; i++)
+                const int totalSegments = 5; //Số lượng segment
+                double r = Math.Sqrt(Math.Pow(start.X - end.X, 2) + Math.Pow(start.Y - end.Y, 2));
+                r = r / (2 * Math.Sqrt(2));
+
+                int xc = (start.X + end.X) / 2;
+                int yc = (start.Y + end.Y) / 2;
+
+                // Giả sử xét từ tâm 0 (0,0)
+                int x = 0;
+                int y = Round(r);
+
+                for (int alpha = 0; alpha < 360; alpha += 360 / totalSegments)
                 {
-                    //Thực hiện phép xoay pixel
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    p.Add(new Point(center.X + x, center.Y - y));
+                    double alpha_rad = alpha * Math.PI / 180;
+                    Point temp = new Point(Round(xc + x * Math.Cos(alpha_rad) - y * Math.Sin(alpha_rad))
+                        , Round(yc + x * Math.Sin(alpha_rad) - y * Math.Cos(alpha_rad)));
+                    p.Add(temp);
                 }
-                oldR = R;
+                pV = p;
             }
-            public override void setPoint(Point start, Point end)
-            {
-                center.X = (start.X + end.X) / 2;
-                center.Y = (start.Y + start.Y) / 2;
-                if (Math.Abs(start.X - center.X) >= Math.Abs(start.Y - center.Y))
-                    R = Math.Abs(start.X - center.X);
-                else R = Math.Abs(start.Y - center.Y);
-                oldR = R;
-
-                float grad = (float)((72 * 3.14) / 180);
-
-                p.Add(new Point(center.X, center.Y - R));
-                for (int i = 1; i < 5; i++)
-                {
-                    //Thực hiện phép xoay pixel
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    p.Add(new Point(center.X + x, center.Y - y));
-                }
-            }
-
-            //Hàm vẽ hình
-            public override void drawObject(OpenGL gl)
-            {
-                gl.Begin(OpenGL.GL_LINE_LOOP);
-                gl.Color(lineColor.R / 255.0, lineColor.G / 255.0, lineColor.B / 255.0, 0);
-
-                //Chuyển đồi từ độ sang radius
-                float grad = (float)((72 * 3.14) / 180);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - (center.Y - R));
-                for (int i = 1; i < 5; i++)
-                {
-                    //Thực hiện xoay pixel từ điểm ảnh chuẩn sang các đỉnh khác
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    gl.Vertex(center.X + x, gl.RenderContextProvider.Height - (center.Y - y));
-                }
-                gl.End();
-                gl.LineWidth(lineSize);
-            }
-
-            //Hàm xoay ảnh
             public override void affine(float degree)
             {
 
-            }
-
-            //Hàm tịnh tiến ảnh
-            public override void move(int dX, int dY)
-            {
-                center.X += dX;
-                center.Y += dY;
             }
         }
 
         // Class hình lục giác
         public class Hexagon : Object
         {
-            private int R;
-            private int oldR;
-            private Point center;
-            public override void setP(List<Point> p, float ration)
-            {
-                R = (int)(oldR * ration);
-            }
             public Hexagon() { }
-            public override void updateP()
+            public override void SetPoint(Point start, Point end)
             {
-                this.p.Clear();
-                float grad = (float)((60 * 3.14) / 180);
-                for (int i = 1; i < 6; i++)
-                {
-                    //Thực hiện phép xoay pixel
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    p.Add(new Point(center.X + x, center.Y - y));
-                }
-                oldR = R;
+                const int totalSegments = 6; //Số lượng segment
+                double r = Math.Sqrt(Math.Pow(start.X - end.X, 2) + Math.Pow(start.Y - end.Y, 2));
+                r = r / (2 * Math.Sqrt(2));
 
-            }
-            //Hàm đặt điểm
-            public override void setPoint(Point start, Point end)
-            {
-                center.X = (start.X + end.X) / 2;
-                center.Y = (start.Y + start.Y) / 2;
-                if (Math.Abs(start.X - center.X) >= Math.Abs(start.Y - center.Y))
-                    R = Math.Abs(start.X - center.X);
-                else R = Math.Abs(start.Y - center.Y);
-                oldR = R;
-                float grad = (float)((60 * 3.14) / 180);
-                p.Add(new Point(center.X, center.Y - R));
-                for (int i = 1; i < 6; i++)
-                {
-                    //Thực hiện phép xoay pixel
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    p.Add(new Point(center.X + x, center.Y - y));
-                }
-            }
-            //Hàm vẽ hình
-            public override void drawObject(OpenGL gl)
-            {
-                gl.Begin(OpenGL.GL_LINE_LOOP);
-                gl.Color(lineColor.R / 255.0, lineColor.G / 255.0, lineColor.B / 255.0, 0);
+                int xc = (start.X + end.X) / 2;
+                int yc = (start.Y + end.Y) / 2;
 
-                //chuyển đổi từ độ sang radius
-                float grad = (float)((60 * 3.14) / 180);
-                gl.Vertex(center.X, gl.RenderContextProvider.Height - (center.Y - R));
-                for (int i = 1; i < 6; i++)
-                {
-                    //Xoay pixel
-                    int x = (int)(-Math.Sin(i * grad) * R);
-                    int y = (int)(Math.Cos(i * grad) * R);
-                    gl.Vertex(center.X + x, gl.RenderContextProvider.Height - (center.Y - y));
-                }
-                gl.End();
-                gl.LineWidth(lineSize);
-            }
+                // Giả sử xét từ tâm 0 (0,0)
+                int x = 0;
+                int y = Round(r);
 
-            //Hàm xoay ảnh
+                for (int alpha = 0; alpha < 360; alpha += 360 / totalSegments)
+                {
+                    double alpha_rad = alpha * Math.PI / 180;
+                    Point temp = new Point(Round(xc + x * Math.Cos(alpha_rad) - y * Math.Sin(alpha_rad))
+                        , Round(yc + x * Math.Sin(alpha_rad) - y * Math.Cos(alpha_rad)));
+                    p.Add(temp);
+                }
+                pV = p;
+            }
             public override void affine(float degree)
             {
 
-            }
-
-            //Hàm tịnh tiến ảnh
-            public override void move(int dX, int dY)
-            {
-                center.X += dX;
-                center.Y += dY;
             }
         }
 
@@ -1650,7 +1493,7 @@ namespace Lab01
             tatcavungto.Add(vt);
         }
 
-        private void tomau2(Point p, Color color, Object[] arr, OpenGL gl, int outline)
+        private void tomau2(Point p, Color color, Object[] arr, OpenGL gl)
         {
             List<Point> pList = new List<Point>();
             Color oColor = Color.White;
@@ -1713,14 +1556,13 @@ namespace Lab01
                 case 4: arrObj[numObj] = new Triangle(); break;
                 case 5: arrObj[numObj] = new Pentagon(); break;
                 case 6: arrObj[numObj] = new Hexagon(); break;
-                //   case 7: arrObj[numObj].colorObject(gl); break;
                 default: break;
             }
 
             //Đặt các tham số khởi tạo
             if (shShape < 7)
             {
-                arrObj[numObj].setPoint(pStart, pEnd);
+                arrObj[numObj].SetPoint(pStart, pEnd);
                 arrObj[numObj].set(pStart, pEnd);
                 arrObj[numObj].setLineColor(userLineColor);
             }
@@ -1732,8 +1574,7 @@ namespace Lab01
             //Vẽ lại tất cả các hình
             for (int i = 0; i <= numObj; i++)
             {
-                arrObj[i].drawObject(gl);
-                //arrObj[i].colorObject(gl);
+                arrObj[i].DrawObject(gl);
             }
 
             if (shShape == 7)
@@ -1744,7 +1585,6 @@ namespace Lab01
                     gl.PointSize(1);
                     gl.Enable(OpenGL.GL_VERTEX_PROGRAM_POINT_SIZE);
                     tomau(toadomau, userBgColor, arrObj, gl);
-                    //tomau2(toadomau, userBgColor, arrObj, gl);
                 }
                 toadomau.X = -1;
                 toadomau.Y = -1;
@@ -1754,7 +1594,7 @@ namespace Lab01
             {
                 if (toadomau.X != -1 && toadomau.Y != -1)
                 {
-                    tomau2(toadomau, userBgColor, arrObj, gl, userLineSize);
+                    tomau2(toadomau, userBgColor, arrObj, gl);
                 }
                 toadomau.X = -1;
                 toadomau.Y = -1;
@@ -1783,7 +1623,7 @@ namespace Lab01
                     for (int i = 0; i < numObj; i++)
                     {
 
-                        List<Point> p = arrObj[i].GetVertices();
+                        List<Point> p = arrObj[i].Get();
                         for (int j = 0; j < p.Count; j++)
                         {
 
@@ -1795,7 +1635,6 @@ namespace Lab01
                                 index = i;
                                 indexj = j;
                                 break;
-
                             }
                         }
                         if (flag == 1) break;
@@ -1803,13 +1642,13 @@ namespace Lab01
                     if (flag == 1)
                     {
                         AffineTransform t = new AffineTransform();
-                        t.CoGian(arrObj[index], arrObj[index].GetVertices()[indexj], pEnd);
+                        t.CoGian(arrObj[index], arrObj[index].Get()[indexj], pEnd);
                     }
                 }
             }
 
             if (idViewPoint != -1) //Nếu đang vẽ một hình thì hiện control point của hình đó lên
-                arrObj[idViewPoint].viewControlPoint(gl);
+                arrObj[idViewPoint].DrawControlPoints(gl);
 
             gl.Flush();
         }
@@ -1930,7 +1769,7 @@ namespace Lab01
             time.Text = st.Elapsed.ToString();
             if (shShape == 8)
             {
-                arrObj[indexnum].updateP();
+                arrObj[indexnum].UpdateCtrlPoints();
             }
         }
 

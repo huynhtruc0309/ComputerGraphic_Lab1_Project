@@ -217,6 +217,60 @@ namespace Lab01
                 }
                 inobject.setP(temp, scaleratio);
             }
+
+            virtual public void Xoay(Object inobject,Point pstart,Point pend)
+            {
+                List<Point> p = inobject.Get();
+                Point diemchon = pend;
+
+                float deltax = pend.X - pstart.X;
+                float deltay = pend.Y - pstart.Y;
+
+                float alpha = (float)Math.Atan2(deltay, deltax);
+                
+                alpha = (float)(alpha * 180 / Math.PI);
+           //     if (pend.Y < pstart.Y) alpha = -alpha;
+                this.Rotate(alpha);
+
+                List<Point> temp = new List<Point>();
+                for (int i = 0; i < p.Count; i++)
+                {
+                    Point t = pend;
+                    float x = p[i].X;
+                    float y = p[i].Y;
+                    this.TransformPoint(ref x, ref y);
+                    t.X = (int)x;
+                    t.Y = (int)y;
+                    temp.Add(t);
+                }
+                inobject.setP(temp, 1);
+
+            }
+
+            virtual public void DiChuyen(Object inobject, Point pstart, Point pend)
+            {
+                List<Point> p = inobject.Get();
+                Point diemchon = pend;
+
+                float deltax = pend.X - pstart.X;
+                float deltay = pend.Y - pstart.Y;
+
+                this.Translate(deltax, deltay);
+                List<Point> temp = new List<Point>();
+                for (int i = 0; i < p.Count; i++)
+                {
+                    Point t = pend;
+                    float x = p[i].X;
+                    float y = p[i].Y;
+                    this.TransformPoint(ref x, ref y);
+                    t.X = (int)x;
+                    t.Y = (int)y;
+                    temp.Add(t);
+                }
+                inobject.setP(temp, 1,1);
+
+
+            }
         }
 
         class vungto
@@ -304,6 +358,9 @@ namespace Lab01
             {
                 pStart = start;
                 pEnd = end;
+
+                
+
             }
             /// <summary>
             /// Hàm set màu viền của hình
@@ -409,14 +466,16 @@ namespace Lab01
             /// </summary>
             /// <param name="p">Danh sách đỉnh mới</param>
             /// <param name="ration">Tỉ lệ scale</param>
-            public virtual void setP(List<Point> p, float ration)
+            public virtual void setP(List<Point> p, float ratio,int flag =-1)
             {
                 int deltaX = p[0].X - pV[0].X;
                 int deltaY = p[0].Y - pV[0].Y;
+                int t = 1;
+                if (flag == 1) t = 0;
                 List<Point> temp = new List<Point>();
                 foreach (var pt in p)
                 {
-                    temp.Add(new Point(pt.X - deltaX, pt.Y - deltaY));
+                    temp.Add(new Point(pt.X - t*deltaX, pt.Y - t*deltaY));
                 }
                 pV = temp;
             }
@@ -552,10 +611,15 @@ namespace Lab01
             public int R;
             public int oldR;
             private Point center;
-            public override void setP(List<Point> p, float ratio)
+            public override void setP(List<Point> p, float ratio,int flag=-1)
             {
                 //float ratio = 1.0f*p[0].X / this.p[0].X;
                 R = (int)(oldR * ratio);
+                if(flag == 1)
+                {
+                    center.X = p[p.Count - 2].X;
+                    center.Y = p[p.Count - 2].Y;
+                }
             }
             public Circle() { }
             public override void UpdateCtrlPoints()
@@ -687,11 +751,17 @@ namespace Lab01
             private int oldRx, oldRy;
             private Point center;
             public Ellipse() { }
-            public override void setP(List<Point> p, float ratio)
+            public override void setP(List<Point> p, float ratio,int flag = -1)
             {
                 //float ratio = 1.0f * p[0].X / this.p[0].X;
                 Rx = (int)(oldRx * ratio);
                 Ry = (int)(oldRy * ratio);
+
+                if(flag == 1)
+                {
+                    center.X = p[p.Count - 1].X;
+                    center.Y = p[p.Count - 1].Y;
+                }
 
             }
             public override void UpdateCtrlPoints()
@@ -924,6 +994,19 @@ namespace Lab01
             {
 
             }
+        }
+
+        public class DaGiac: Object
+        {
+ 
+            public override void SetPoint(Point start, Point end)
+            {
+                base.SetPoint(start, end);
+                this.p.Add(end);
+                this.pV.Add(end);
+                int k = 5;
+            }
+
         }
 
         //Khu vực khai báo các biến toàn cục để thao tác với ứng dụng
@@ -1556,6 +1639,7 @@ namespace Lab01
                 case 4: arrObj[numObj] = new Triangle(); break;
                 case 5: arrObj[numObj] = new Pentagon(); break;
                 case 6: arrObj[numObj] = new Hexagon(); break;
+               // case 20: arrObj[numObj] = new DaGiac();break;
                 default: break;
             }
 
@@ -1566,6 +1650,8 @@ namespace Lab01
                 arrObj[numObj].set(pStart, pEnd);
                 arrObj[numObj].setLineColor(userLineColor);
             }
+
+            if (shShape == 20) arrObj[numObj].setLineColor(userLineColor);
 
             if (numObj > 0)
                 arrObj[numObj - 1].setLineSize(userLineSize);
@@ -1612,7 +1698,7 @@ namespace Lab01
                 gl.End();
                 gl.Flush();
             }
-            if (shShape == 8)
+            if (shShape == 8 || shShape == 21 || shShape == 22)
             {
                 int flag = 0;
                 Point ptemp = pStart;
@@ -1620,7 +1706,7 @@ namespace Lab01
                 int indexj = 0;
                 if (ptemp.X != 0 && ptemp.Y != 0)
                 {
-                    for (int i = 0; i < numObj; i++)
+                    for (int i = 0; i <= numObj; i++)
                     {
 
                         List<Point> p = arrObj[i].Get();
@@ -1642,7 +1728,12 @@ namespace Lab01
                     if (flag == 1)
                     {
                         AffineTransform t = new AffineTransform();
+                        if(shShape==8)
                         t.CoGian(arrObj[index], arrObj[index].Get()[indexj], pEnd);
+                        if (shShape == 21) { 
+                            t.Xoay(arrObj[index], arrObj[index].Get()[indexj], pEnd);
+                        }
+                        if (shShape == 22) t.DiChuyen(arrObj[index], arrObj[index].Get()[indexj], pEnd);
                     }
                 }
             }
@@ -1739,6 +1830,25 @@ namespace Lab01
             shShape = 10;
         }
 
+        private void bt_DaGiac_Click(object sender, EventArgs e)
+        {
+            shShape = 20;
+            
+            numObj += 1; //Tăng biến đếm số hình hiện có
+            arrObj[numObj] = new DaGiac();
+            nowId = -1;
+        }
+
+        private void btXoay_Click(object sender, EventArgs e)
+        {
+            shShape = 21;
+        }
+
+        private void btDiChuyen_Click(object sender, EventArgs e)
+        {
+            shShape = 22;
+        }
+
         //Khi di chuyển chuột trên màn hình
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)
         {
@@ -1767,7 +1877,7 @@ namespace Lab01
             //Hiển thị thời gian
             st.Stop();
             time.Text = st.Elapsed.ToString();
-            if (shShape == 8)
+            if (shShape == 8 || shShape == 21 || shShape == 22)
             {
                 arrObj[indexnum].UpdateCtrlPoints();
             }
@@ -1790,6 +1900,15 @@ namespace Lab01
                     }
                     if (i == 0) idViewPoint = -1; //Nếu không thì coi như không hiện viewPoint lên
                 }
+            if (shShape == 20)
+            {
+                if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                {
+                    pEnd = e.Location;
+                    arrObj[numObj].SetPoint(pStart, pEnd);
+                }
+            }
+
         }
     }
 }

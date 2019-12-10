@@ -47,6 +47,9 @@
             this.Keo_Gian = new System.Windows.Forms.Button();
             this.bt_select = new System.Windows.Forms.Button();
             this.bt_scanline = new System.Windows.Forms.Button();
+            this.bt_DaGiac = new System.Windows.Forms.Button();
+            this.btXoay = new System.Windows.Forms.Button();
+            this.btDiChuyen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -187,7 +190,6 @@
             this.bt_DoDay.Name = "bt_DoDay";
             this.bt_DoDay.Size = new System.Drawing.Size(87, 21);
             this.bt_DoDay.TabIndex = 13;
-            this.bt_DoDay.SelectedIndex = 0;
             this.bt_DoDay.SelectedIndexChanged += new System.EventHandler(this.bt_DoDay_SelectedIndexChanged);
             // 
             // btMauVien
@@ -234,11 +236,44 @@
             this.bt_scanline.UseVisualStyleBackColor = true;
             this.bt_scanline.Click += new System.EventHandler(this.bt_scanline_Click);
             // 
+            // bt_DaGiac
+            // 
+            this.bt_DaGiac.Location = new System.Drawing.Point(356, 40);
+            this.bt_DaGiac.Name = "bt_DaGiac";
+            this.bt_DaGiac.Size = new System.Drawing.Size(75, 23);
+            this.bt_DaGiac.TabIndex = 18;
+            this.bt_DaGiac.Text = "Da Giac";
+            this.bt_DaGiac.UseVisualStyleBackColor = true;
+            this.bt_DaGiac.Click += new System.EventHandler(this.bt_DaGiac_Click);
+            // 
+            // btXoay
+            // 
+            this.btXoay.Location = new System.Drawing.Point(450, 40);
+            this.btXoay.Name = "btXoay";
+            this.btXoay.Size = new System.Drawing.Size(75, 23);
+            this.btXoay.TabIndex = 19;
+            this.btXoay.Text = "Xoay";
+            this.btXoay.UseVisualStyleBackColor = true;
+            this.btXoay.Click += new System.EventHandler(this.btXoay_Click);
+            // 
+            // btDiChuyen
+            // 
+            this.btDiChuyen.Location = new System.Drawing.Point(541, 40);
+            this.btDiChuyen.Name = "btDiChuyen";
+            this.btDiChuyen.Size = new System.Drawing.Size(75, 23);
+            this.btDiChuyen.TabIndex = 20;
+            this.btDiChuyen.Text = "Di Chuyen";
+            this.btDiChuyen.UseVisualStyleBackColor = true;
+            this.btDiChuyen.Click += new System.EventHandler(this.btDiChuyen_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1139, 542);
+            this.Controls.Add(this.btDiChuyen);
+            this.Controls.Add(this.btXoay);
+            this.Controls.Add(this.bt_DaGiac);
             this.Controls.Add(this.bt_scanline);
             this.Controls.Add(this.bt_select);
             this.Controls.Add(this.Keo_Gian);
@@ -287,6 +322,9 @@
         private System.Windows.Forms.Button Keo_Gian;
         private System.Windows.Forms.Button bt_select;
         private System.Windows.Forms.Button bt_scanline;
+        private System.Windows.Forms.Button bt_DaGiac;
+        private System.Windows.Forms.Button btXoay;
+        private System.Windows.Forms.Button btDiChuyen;
     }
 }
 

@@ -145,3 +145,19 @@ C:\Users\soled\Desktop\Pull\ComputerGraphic_Lab1_Project-develop\ComputerGraphic
 C:\Users\soled\Desktop\Pull\ComputerGraphic_Lab1_Project-develop\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.csproj.CopyComplete
 C:\Users\soled\Desktop\Pull\ComputerGraphic_Lab1_Project-develop\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.exe
 C:\Users\soled\Desktop\Pull\ComputerGraphic_Lab1_Project-develop\ComputerGraphic_Lab1_Project\Lab01\obj\Debug\Lab01.pdb
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\Lab01.exe.config
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\Lab01.exe
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\Lab01.pdb
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\SharpGL.dll
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\SharpGL.SceneGraph.dll
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\SharpGL.WinForms.dll
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\SharpGL.xml
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\SharpGL.SceneGraph.xml
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\bin\Debug\SharpGL.WinForms.xml
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.Form1.resources
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.exe
+C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.pdb

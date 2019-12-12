@@ -161,3 +161,20 @@ C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\De
 C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.csproj.CopyComplete
 C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.exe
 C:\Users\uy201\Music\dohoa_1 final\ComputerGraphic_Project1-develop\Lab01\obj\Debug\Lab01.pdb
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\Lab01.exe.config
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\Lab01.exe
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\Lab01.pdb
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\SharpGL.dll
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\SharpGL.SceneGraph.dll
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\SharpGL.WinForms.dll
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\SharpGL.xml
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\SharpGL.SceneGraph.xml
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\bin\Debug\SharpGL.WinForms.xml
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.csprojAssemblyReference.cache
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.Form1.resources
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.Properties.Resources.resources
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.csproj.GenerateResource.cache
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.csproj.CoreCompileInputs.cache
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.csproj.CopyComplete
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.exe
+D:\DHMT\ĐHMT - Thực hành Lab\ComputerGraphic_Project1\Lab01\obj\Debug\Lab01.pdb
